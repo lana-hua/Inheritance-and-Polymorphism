@@ -1,5 +1,7 @@
 package rental;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -51,7 +53,7 @@ public class Frontend {
             case "D" -> removeVehicle(dataToken);
             case "B" -> bookVehicle(dataToken);
             case "C" -> cancelBooking(dataToken);
-            case "L" -> loadVehicles(dataToken);
+            case "L" -> loadVehicles();
             case "R" -> returnVehicle(dataToken);
             case "PF" -> fleet.printByMake();//needs to be ordered by make then date
             case "PR" -> bookings.printByVehicle(); //needs to be ordered by plate then beginning date
@@ -63,6 +65,37 @@ public class Frontend {
             }
         }
     }
+    /**
+     * Loads vehicles into the Fleet via text file.
+     * File needs to be placed in the top-level project folder.
+     * Should not add the same vehicle if loaded twice.
+     */
+    private static void loadVehicles() {
+        try {
+            File file = new File("vehicles.txt");
+            Scanner scanner = new Scanner(new File(file.toURI()));
+            int numVehiclesLoaded = 0;
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                line = "A " + line;
+                String[] dataToken = line.split(" ");
+                if (Vehicle.isValidVehicle(dataToken)) {
+                    Vehicle newVehicle = new Vehicle(dataToken);
+                    if (!fleet.contains(newVehicle)) {
+                        fleet.add(newVehicle);
+                        numVehiclesLoaded++;
+                    }
+                } else { return; }
+            }
+            System.out.println(numVehiclesLoaded + " vehicles loaded.");
+            scanner.close();
+        }
+        catch (FileNotFoundException exception) {
+            System.out.println("Text file not found: " + exception.getMessage());
+        }
+    }
+
 
     /**
      * Adds a new vehicle to the fleet if the vehicle data is valid.
@@ -301,15 +334,6 @@ public class Frontend {
 
             System.out.println("Trip completed: " + newTrip.toString());
         }
-    }
-
-    /**
-     * Loads vehicles into the Fleet via text file.
-     * File needs to be placed in the top-level project folder.
-     * Should not add the same vehicle if loaded twice.
-     */
-    public static void loadVehicles() {
-
     }
 
     /**

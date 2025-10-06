@@ -110,6 +110,28 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     /**
+     * Checks if the plate string is a valid plate.
+     * Checks the character amount, if the first 5 characters are digit and if the last char is equal to S, D, or X.
+     * @param plate The string plate that is checked.
+     * @return true if it's a valid plate; false otherwise.
+     */
+    public static boolean isValidPlate(String plate) {
+        plate = plate.trim();
+        if (plate.length() != 6){
+            return false;
+        }
+        for (int i = 0; i < plate.length(); i++) {
+            if(i != 5 && !Character.isDigit(plate.charAt(i))){
+                return false;
+            }
+            else if (plate.charAt(i) != 'S' || plate.charAt(i) != 'D' || plate.charAt(i) != 'X'){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Checks if the mileage is greater than 0.
      * @param mileage The mileage to be checked.
      * @return true if the mileage is greater than 0; false otherwise.
