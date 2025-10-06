@@ -6,7 +6,7 @@ package rental;
  * @author Lana Huang, Sharon Chen
  */
 
-public class RunProject1 {
+public class RunProject2 {
     /**
      * The main method that launches the Vehicle Management System.
      * @param args command line arguments (not used)
