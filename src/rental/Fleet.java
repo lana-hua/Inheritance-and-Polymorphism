@@ -54,11 +54,13 @@ public class Fleet {
      * @param vehicle Vehicle to be added to the fleet.
      */
     public void add(Vehicle vehicle) {
-        if (size == fleet.length) {
-            grow();
+        if (!contains(vehicle)) {
+            if (size == fleet.length) {
+                grow();
+            }
+            fleet[size] = vehicle;
+            size++;
         }
-        fleet[size] = vehicle;
-        size++;
     }
 
     /**
