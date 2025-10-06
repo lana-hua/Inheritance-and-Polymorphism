@@ -2,7 +2,7 @@ package rental;
 
 /**
  The Booking class manages vehicle reservations made by an employee for specific dates
- It allows the user to obtain information including dates, vehicle details, and employee details while also checking validity of the dates.
+ It allows the user to obtain information including dates, vehicle details, employee details, and campus details while also checking validity of the dates.
  @author Sharon Chen
  */
 
@@ -11,6 +11,7 @@ public class Booking {
     private Date end;
     private Vehicle vehicle;
     private Employee employee;
+    private Campus dropoff;
 
     /**
      * Constructs a Booking object with the specified start date, end date, vehicle, and employee.
@@ -18,12 +19,14 @@ public class Booking {
      * @param end the end date of the booking period
      * @param vehicle the vehicle assigned to this booking
      * @param employee the employee who made this booking
+     * @param dropoff the campus the individual is leaving to in this booking
      */
-    public Booking(Date begin, Date end, Vehicle vehicle, Employee employee){
+    public Booking(Date begin, Date end, Vehicle vehicle, Employee employee, Campus dropoff){
         this.begin = begin;
         this.end = end;
         this.vehicle = vehicle;
         this.employee = employee;
+        this.dropoff = dropoff;
     }
 
     /**
@@ -59,29 +62,39 @@ public class Booking {
     }
 
     /**
+     * Returns the campus the individual is being dropped off on in this booking.
+     * @return the campus dropoff associated with this booking
+     */
+    public Campus getDropoff() { return dropoff;}
+
+    /**
      * Validates whether a booking request meets all the rules and constraints.
      * @param dataToken the array containing booking data tokens
      * @return true if all validation criteria are met; return false otherwise
      */
     public static boolean isValidBooking(String[] dataToken) {
-        String plate = dataToken[3];
-        Vehicle vehicle = new Vehicle(plate);
-        String employee = dataToken[4];
         Date begin = new Date(dataToken[1]);
         Date end = new Date(dataToken[2]);
+        String plate = dataToken[3];
+        String employee = dataToken[4];
+        Vehicle vehicle = new Vehicle(plate);
+        String dropoff = dataToken[5];
 
         if (!Frontend.fleet.contains(vehicle)) {
-            Frontend.printInvalidBookingMessage("Vehicle does not Exist Error", vehicle.getPlate(), null, null, null);
+            Frontend.printInvalidBookingMessage("Vehicle does not Exist Error", vehicle.getPlate(), null, null, null, null);
             return false;
         } else if (Frontend.bookings.isVehicleConflict(begin, end, plate)) {
-            Frontend.printInvalidBookingMessage("Vehicle not Available Error", plate, null, begin, end);
+            Frontend.printInvalidBookingMessage("Vehicle not Available Error", plate, null, begin, end, null);
             return false;
         } else if (!Employee.isValidEmployee(employee)) {
-            Frontend.printInvalidBookingMessage("Employee not Eligible Error", null, employee, null,null);
+            Frontend.printInvalidBookingMessage("Employee not Eligible Error", null, employee, null,null, null);
             return false;
         } else if (Frontend.bookings.isEmployeeConflict(begin, end, employee) != null) {
             Date start = Frontend.bookings.isEmployeeConflict(begin, end, employee);
-            Frontend.printInvalidBookingMessage("Employee Conflict Error", null, employee, begin, end);
+            Frontend.printInvalidBookingMessage("Employee Conflict Error", null, employee, begin, end, null);
+            return false;
+        } else if (!Campus.isValidCampus(dropoff)) {
+            Frontend.printInvalidBookingMessage("Campus Invalid Location", null, null, null, null, dropoff);
             return false;
         }
         return true;
@@ -140,7 +153,7 @@ public class Booking {
      */
     @Override
     public String toString(){
-        return (vehicle.toString() + " [beginning " + begin + " ending " + end + ":" + employee.name().toUpperCase() + "]");
+        return (vehicle.toString() + " " + begin + " ~ " + end + " [dropoff:" + dropoff.name().toUpperCase() + "] [" + employee.name().toUpperCase() + "]");
     }
 
 }
