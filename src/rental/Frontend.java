@@ -165,9 +165,9 @@ public class Frontend {
             String plate = dataToken[3];
             Vehicle vehicle = fleet.getVehicle(plate);
             Employee employeeName = Employee.valueOf(dataToken[4].substring(0, 1).toUpperCase() + dataToken[4].toLowerCase().substring(1));
+            Campus dropoff = Campus.valueOf(dataToken[5].substring(0,1).toUpperCase() + dataToken[5].toLowerCase().substring(1));
 
-
-            Booking newBooking = new Booking(begin, end, vehicle, employeeName);
+            Booking newBooking = new Booking(begin, end, vehicle, employeeName, dropoff);
             bookings.add(newBooking);
 
             System.out.println(newBooking.toString() + " booked.");
@@ -209,12 +209,13 @@ public class Frontend {
      * @param begin the beginning date of the booking
      * @param end the ending date of the booking
      */
-    public static void printInvalidBookingMessage(String errorType, String plate, String employee, Date begin, Date end) {
+    public static void printInvalidBookingMessage(String errorType, String plate, String employee, Date begin, Date end, String dropoff) {
         switch (errorType) {
             case "Vehicle does not Exist Error" -> System.out.println(plate + " is not in the fleet.");
             case "Vehicle not Available Error" -> System.out.println(plate + " - booking with " + begin + " ~ " + end + " not available.");
             case "Employee not Eligible Error" -> System.out.println(employee + " - not an eligible employee to book.");
             case "Employee Conflict Error" -> System.out.println(employee + " - has an existing booking conflicting with the beginning date " + begin);
+            case "Campus Invalid Location" -> System.out.println(dropoff + " - invalid location");
         }
     }
 
