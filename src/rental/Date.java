@@ -16,6 +16,22 @@ public class Date implements Comparable<Date> {
     public static final int CENTENNIAL = 100;
     public static final int QUATERCENTENNIAL = 400;
 
+    public static final int MIN_DAYS = 1;
+    public static final int MAX_DAYS_TYPICAL = 31;
+    public static final int MIN_MONTH = 1;
+    public static final int MAX_MONTH = 12;
+    public static final int MIN_YEAR = 0;
+
+    public static final int FEBRUARY = 2;
+    public static final int APRIL = 4;
+    public static final int JUNE = 6;
+    public static final int SEPTEMBER = 9;
+    public static final int NOVEMBER = 11;
+
+    public static final int FEBRUARY_NONLEAP_DAYS = 28;
+    public static final int FEBRUARY_LEAP_DAYS = 29;
+    public static final int SHORT_MONTH_DAYS = 30;
+
     /**
      * Constructs a Date object with the specified month, day, and year.
      * @param month the month of the date
