@@ -1,4 +1,6 @@
-package rental;
+package util;
+
+import rental.Frontend;
 
 import java.util.Calendar;
 

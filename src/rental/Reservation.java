@@ -1,5 +1,7 @@
 package rental;
 
+import util.Date;
+
 import java.util.Calendar;
 
 /**
@@ -53,8 +55,9 @@ public class Reservation {
     private void grow() {
         Booking[] newArray = new Booking[size+4];
 
-        if (size >= 0) System.arraycopy(bookings, 0, newArray, 0, size);
-
+        for (int i = 0; i < size; i++){
+            newArray[i] = bookings[i];
+        }
         bookings = newArray;
     } //resize the array
 

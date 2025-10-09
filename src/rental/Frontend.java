@@ -1,5 +1,8 @@
 package rental;
 
+import util.Date;
+import vehicle.Vehicle;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -79,7 +82,7 @@ public class Frontend {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim();
                 line = "A " + line;
-                String[] dataToken = line.split(" ");
+                String[] dataToken = line.split("\\s+");
                 if (Vehicle.isValidVehicle(dataToken)) {
                     Vehicle newVehicle = new Vehicle(dataToken);
                     if (!fleet.contains(newVehicle)) {
@@ -334,6 +337,10 @@ public class Frontend {
 
             System.out.println("Trip completed: " + newTrip.toString());
         }
+    }
+
+    public static String capitalizeString(String string){
+        return string.substring(0, 1).toUpperCase() + string.toLowerCase().substring(1);
     }
 
     /**

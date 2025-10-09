@@ -10,6 +10,7 @@ public class Trip {
     private Booking booking;
     private int beginMileage;
     private int endMileage;
+    private boolean surcharge;
 
     /**
      * Constructs a trip object with booking, vehicle starting mileage, and the vehicle ending mileage

@@ -24,10 +24,10 @@ public enum Campus {
     Campus(String city) {this.city = city;}
 
     /**
-     * Checks if the value of a string is a valid Employee
+     * Checks if the value of a string is a valid Campus
      * The method provides capitalization to check and
      * @param campus The string campus that the method is checking
-     * @return true if the string is a valid employee enum; return false otherwise.
+     * @return true if the string is a valid campus enum; return false otherwise.
      */
     public static boolean isValidCampus(String campus) {
         String capitalizedName = campus.substring(0, 1).toUpperCase() + campus.toLowerCase().substring(1);

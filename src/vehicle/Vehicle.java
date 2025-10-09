@@ -1,16 +1,24 @@
-package rental;
+package vehicle;
+
+import rental.Campus;
+import util.Date;
+import rental.Frontend;
+import rental.Make;
 
 /**
  Vehicle class that contains information about the vehicle.
  It contains the string license plate, the Date it was obtained, the make of the car, and the mileage on the odometer.
  @author Lana Huang
  */
-public class Vehicle implements Comparable<Vehicle> {
-    private String plate; //license plate number
-    private Date obtained; //Date class described in the next page
-    private Make make; //Make is an enum class
-    private int mileage; //current reading on the odometer
-
+public abstract class Vehicle implements Comparable<Vehicle> {
+    protected String plate;
+    protected Date obtained;
+    protected Make make;
+    protected int mileage;
+    protected String type;
+    protected Campus campus; //Campus is an enum class defining the campuses.
+    public abstract double charge(int mileageUsed); //charge per mile used
+    public abstract double surcharge(int mileageUsed, boolean surcharge);
     /**
      * Gets the mileage from an instance of Vehicle.
      * @return mileage
@@ -60,6 +68,8 @@ public class Vehicle implements Comparable<Vehicle> {
         this.obtained = null;
         this.make = null;
         this.mileage = 0;
+        this.type = null;
+        this.campus = null;
     }
 
     /**
@@ -69,11 +79,13 @@ public class Vehicle implements Comparable<Vehicle> {
      * @param make Make of the vehicle.
      * @param mileage Mileage of the vehicle.
      */
-    public Vehicle(String plate, Date obtained, Make make, int mileage) {
+    public Vehicle(String plate, String type, Date obtained, Make make, int mileage, Campus campus) {
         this.plate = plate;
         this.obtained = obtained;
         this.make = make;
         this.mileage = mileage;
+        this.campus = campus;
+        this.type = type;
     }
 
     /**
@@ -87,6 +99,7 @@ public class Vehicle implements Comparable<Vehicle> {
             this.obtained = new Date(dataToken[2]);
             this.make = Make.valueOf(dataToken[3].toUpperCase());
             this.mileage = Integer.parseInt(dataToken[4]);
+            this.campus = Campus.valueOf(Frontend.capitalizeString(dataToken[5]));
         }
     }
 
@@ -106,7 +119,9 @@ public class Vehicle implements Comparable<Vehicle> {
             return false;
         } else if (!Vehicle.isValidMileage(mileage)) {
             return false;
-        } else { return true; }
+        } else if (!Campus.isValidCampus(dataToken[5])) {
+            return false;
+        } else{ return true; }
     }
 
     /**
@@ -162,12 +177,13 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     /**
-     * Override the toString method to return the plate, make, date obtained, and the mileage.
+     * Override the toString method to return the plate, make, utility, date obtained, mileage, and the campus.
+     * 80671S[HONDA:utility] 9/9/2022 [mileage:33220] [Livingston:New Brunswick]
      * @return a string of all the vehicle traits together.
      */
     @Override
     public String toString() {
-        return plate + ":" + make + ":" + obtained + " [mileage:" + mileage + "]";
+        return plate + "[" + make + ":" + type + "] " + obtained + " [mileage:" + mileage + "] [" + campus + "]";
     }
 
     /**
@@ -184,22 +200,22 @@ public class Vehicle implements Comparable<Vehicle> {
      * Testbed for 3 test cases of Testing Specifications for compareTo method.
      * @param args
      */
-    public static void main(String[] args) {
-        //1 output
-        Vehicle vehicle1 = new Vehicle("80671S", null, Make.CHEVY, 10293);
-        Vehicle vehicle2 = new Vehicle("71707X", null, Make.CHEVY, 10293);
-        System.out.println(vehicle1.compareTo(vehicle2));
-
-        //0 output
-        Vehicle vehicle3 = new Vehicle("58718D", null, Make.CHEVY, 10293);
-        Vehicle vehicle4 = new Vehicle("58718D", null, Make.CHEVY, 10293);
-        System.out.println(vehicle3.compareTo(vehicle4));
-
-        //-1 output
-        Vehicle vehicle5 = new Vehicle("58718D", null, Make.CHEVY, 10293);
-        Vehicle vehicle6 = new Vehicle("65402A", null, Make.CHEVY, 10293);
-        System.out.println(vehicle5.compareTo(vehicle6));
-
-
-    }
+//    public static void main(String[] args) {
+//        //1 output
+//        Vehicle vehicle1 = new Vehicle("80671S", null, Make.CHEVY, 10293);
+//        Vehicle vehicle2 = new Vehicle("71707X", null, Make.CHEVY, 10293);
+//        System.out.println(vehicle1.compareTo(vehicle2));
+//
+//        //0 output
+//        Vehicle vehicle3 = new Vehicle("58718D", null, Make.CHEVY, 10293);
+//        Vehicle vehicle4 = new Vehicle("58718D", null, Make.CHEVY, 10293);
+//        System.out.println(vehicle3.compareTo(vehicle4));
+//
+//        //-1 output
+//        Vehicle vehicle5 = new Vehicle("58718D", null, Make.CHEVY, 10293);
+//        Vehicle vehicle6 = new Vehicle("65402A", null, Make.CHEVY, 10293);
+//        System.out.println(vehicle5.compareTo(vehicle6));
+//
+//
+//    }
 }

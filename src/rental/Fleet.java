@@ -1,5 +1,7 @@
 package rental;
 
+import vehicle.Vehicle;
+
 /**
  * Fleet class that manages a collection of Vehicles.
  *  It allows the user to search, resize, add, remove, and match vehicles in the list.
@@ -42,6 +44,10 @@ public class Fleet {
      */
     private void grow() {
         Vehicle[] newArray = new Vehicle[size+4];
+
+        for (int i = 0; i < size; i++){
+            newArray[i] = fleet[i];
+        }
 
         if (size >= 0) System.arraycopy(fleet, 0, newArray, 0, fleet.length);
 

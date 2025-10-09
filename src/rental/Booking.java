@@ -1,5 +1,8 @@
 package rental;
 
+import util.Date;
+import vehicle.Vehicle;
+
 /**
  The Booking class manages vehicle reservations made by an employee for specific dates
  It allows the user to obtain information including dates, vehicle details, employee details, and campus details while also checking validity of the dates.
