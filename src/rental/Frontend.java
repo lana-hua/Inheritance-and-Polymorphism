@@ -56,7 +56,7 @@ public class Frontend {
             case "L" -> loadVehicles();
             case "R" -> returnVehicle(dataToken);
             case "PF" -> fleet.printByMake();//needs to be ordered by make then date
-            case "PR" -> bookings.printByVehicle(); //needs to be ordered by plate then beginning date
+            case "PR" -> bookings.printByCity(); //needs to be ordered by city, then plate, then beginning date
             case "PD" -> bookings.printByDept();//needs to be ordered by department then by employee
             case "PT" -> tripList.print();//needs to be ordered by ending date
             default -> {

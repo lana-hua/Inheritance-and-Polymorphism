@@ -254,10 +254,16 @@ public class Reservation {
         return returnDate.compareTo(earliestDate) == 0;
     }
 
+    private void swapBookings(int i, int j) {
+        Booking temp = bookings[i];
+        bookings[i] = bookings[j];
+        bookings[j] = temp;
+    }
+
     /**
-     * Prints all reservations ordered by license plate number and then by beginning date.
+     * PR Command: Prints all reservations ordered by campus city location, then license plate number, and then by beginning date.
      */
-    public void printByVehicle() {
+    public void printByCity() {
         if (size == 0) {
             System.out.println("There is no booking record.");
             return;
@@ -265,22 +271,26 @@ public class Reservation {
 
         for (int i = 0; i < (size - 1); i++) {
             for (int j = 0; j < (size - i - 1); j++) {
-                String plate1 = bookings[j].getVehicle().getPlate();
-                String plate2 = bookings[j + 1].getVehicle().getPlate();
+                String city1 = bookings[j].getCampusDropoff().getCity();
+                String city2 = bookings[j + 1].getCampusDropoff().getCity();
 
-                if (plate1.compareTo(plate2) > 0) {
-                    Booking temp = bookings[j];
-                    bookings[j] = bookings[j + 1];
-                    bookings[j + 1] = temp;
+                if (city1.compareTo(city2) > 0) {
+                    swapBookings(j, (j + 1));
                 }
-                else if (plate1.compareTo(plate2) == 0) {
-                    Date begin1 = bookings[j].getBegin();
-                    Date begin2 = bookings[j + 1].getBegin();
-                    //sort begin dates in vehicles
-                    if (begin1.compareTo(begin2) > 0) {
-                        Booking temp = bookings[j];
-                        bookings[j] = bookings[j + 1];
-                        bookings[j + 1] = temp;
+                else if (city1.compareTo(city2) == 0) {
+                    String plate1 = bookings[j].getVehicle().getPlate();
+                    String plate2 = bookings[j + 1].getVehicle().getPlate();
+
+                    if (plate1.compareTo(plate2) > 0) {
+                        swapBookings(j, (j + 1));
+                    }
+                    else if (plate1.compareTo(plate2) == 0) {
+                        Date begin1 = bookings[j].getBegin();
+                        Date begin2 = bookings[j + 1].getBegin();
+
+                        if (begin1.compareTo(begin2) > 0) {
+                            swapBookings(j, (j + 1));
+                        }
                     }
                 }
             }
@@ -291,10 +301,10 @@ public class Reservation {
             System.out.println(bookings[i].toString());
         }
         System.out.println("*end of list.\n");
-    } //ordered by plate then beginning date
+    } //ordered by city, then plate, and then beginning date
 
     /**
-     * Prints all reservations ordered by department and then by employee.
+     * PD Command: Prints all reservations ordered by department and then by employee.
      */
     public void printByDept() {
         if (size == 0) {
