@@ -55,7 +55,7 @@ Missing data tokens for adding a vehicle.
 23499X[CHEVY:truck] 6/13/2023 [mileage:19666] [Newark:Newark]
 67156S[FORD:sedan] 12/12/2012 [mileage:84390] [Newark:Newark]
 67359S[FORD:sedan] 11/1/2019 [mileage:59644] [Newark:Newark]
-*end of list.
+*end of util.
 
 58718D has been removed from the fleet.
 58718D is not in the fleet.
@@ -91,7 +91,7 @@ TAYLOR - has an existing booking conflicting with booking date 10/27/2025 ~ 10/2
 58719D:TOYOTA [Livingston:New Brunswick] 10/27/2025 ~ 10/30/2025 [drop off:Newark] [TAYLOR]
 58719D:TOYOTA [Livingston:New Brunswick] 11/24/2025 ~ 11/30/2025 [drop off:Busch] [LIM]
 67156S:FORD [Newark:Newark] 11/1/2025 ~ 11/1/2025 [drop off:Livingston] [TAYLOR]
-*end of list.
+*end of util.
 
 58718D:FORD [Busch:New Brunswick] 10/27/2025 ~ 10/27/2025 [drop off:Cook] [HARPER] booked.
 58718D:FORD [Busch:New Brunswick] 11/4/2025 ~ 11/4/2025 [drop off:Busch] [HARPER] booked.
@@ -137,7 +137,7 @@ KAUR - has an existing booking conflicting with booking date 10/28/2025 ~ 10/28/
 	71707X:TOYOTA [Cook:New Brunswick] 11/3/2025 ~ 11/3/2025 [drop off:Cook] [RAMESH]
 	67156S:FORD [Newark:Newark] 11/1/2025 ~ 11/1/2025 [drop off:Livingston] [TAYLOR]
 	58719D:TOYOTA [Livingston:New Brunswick] 10/27/2025 ~ 10/30/2025 [drop off:Newark] [TAYLOR]
-*end of list.
+*end of util.
 
 58718D:11/4/2025 ~ 11/4/2025 has been canceled.
 58718D:11/4/2025 ~ 11/4/2025 - cannot find the booking.
@@ -168,7 +168,7 @@ Trip completed: 67359S 11/3/2025 ~ 11/3/2025 mileage(old): 59800 mileage(new): 5
 71707X:TOYOTA [Cook:New Brunswick] 11/3/2025 ~ 11/3/2025 [drop off:Cook] [RAMESH]
 80671S:HONDA [Livingston:New Brunswick] 11/3/2025 ~ 11/5/2025 [drop off:Cook] [ZIMNES]
 58719D:TOYOTA [Newark:Newark] 11/24/2025 ~ 11/30/2025 [drop off:Busch] [LIM]
-*end of list.
+*end of util.
 
 *List of completed trips ordered by license plate and ending date.
 23499X 10/29/2025 ~ 10/29/2025 mileage(old): 19666 mileage(new): 19900 mileage(used): 234 [dropped off: Newark]
@@ -181,7 +181,7 @@ Trip completed: 67359S 11/3/2025 ~ 11/3/2025 mileage(old): 59800 mileage(new): 5
 67359S 10/31/2025 ~ 11/2/2025 mileage(old): 59644 mileage(new): 59800 mileage(used): 156 [dropped off: Livingston**]
 67359S 11/3/2025 ~ 11/3/2025 mileage(old): 59800 mileage(new): 59999 mileage(used): 199 [dropped off: Livingston]
 80671S 10/31/2025 ~ 11/2/2025 mileage(old): 33220 mileage(new): 33333 mileage(used): 113 [dropped off: Livingston]
-*end of list.
+*end of util.
 
 *List of vehicles in the fleet, ordered by location/make/date obtained.
 57373D[FORD:utility] 11/8/2012 [mileage:121305] [Camden:Camden]
@@ -203,7 +203,7 @@ Trip completed: 67359S 11/3/2025 ~ 11/3/2025 mileage(old): 59800 mileage(new): 5
 51401D[TOYOTA:utility] 6/30/2021 [mileage:59978] [Livingston:New Brunswick]
 67155S[CHEVY:sedan] 3/1/2010 [mileage:101230] [Newark:Newark]
 58719D[TOYOTA:utility] 1/31/2017 [mileage:87234] [Newark:Newark]
-*end of list.
+*end of util.
 
 *List of charges ordered by department.
 --Business Analytics and Information Technology--
@@ -234,7 +234,7 @@ Trip completed: 67359S 11/3/2025 ~ 11/3/2025 mileage(old): 59800 mileage(new): 5
 	58719D 10/27/2025 ~ 10/30/2025 mileage(old): 87120 mileage(new): 87234 mileage(used): 114 [dropped off: Newark**]
 		[charge: $226.86] [surcharge: $34.20] [total charge: $ 261.06]
   <*>Department total: $ 485.46
-*end of list.
+*end of util.
 
 q - invalid command!
 
