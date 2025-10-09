@@ -1,5 +1,7 @@
 package rental;
 
+import vehicle.Vehicle;
+
 /**
  * Fleet class that manages a collection of Vehicles.
  *  It allows the user to search, resize, add, remove, and match vehicles in the list.

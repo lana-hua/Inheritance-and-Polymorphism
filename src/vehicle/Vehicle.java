@@ -1,4 +1,8 @@
-package rental;
+package vehicle;
+
+import rental.Date;
+import rental.Frontend;
+import rental.Make;
 
 /**
  Vehicle class that contains information about the vehicle.

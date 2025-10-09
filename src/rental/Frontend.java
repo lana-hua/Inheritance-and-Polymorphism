@@ -1,5 +1,7 @@
 package rental;
 
+import vehicle.Vehicle;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
