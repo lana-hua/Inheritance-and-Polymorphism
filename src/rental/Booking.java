@@ -65,7 +65,7 @@ public class Booking {
      * Returns the campus the individual is being dropped off on in this booking.
      * @return the campus dropoff associated with this booking
      */
-    public Campus getDropoff() { return dropoff;}
+    public Campus getCampusDropoff() { return dropoff;}
 
     /**
      * Validates whether a booking request meets all the rules and constraints.

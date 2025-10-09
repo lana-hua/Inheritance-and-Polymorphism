@@ -17,7 +17,8 @@ public class Date implements Comparable<Date> {
     public static final int QUATERCENTENNIAL = 400;
 
     public static final int MIN_DAYS = 1;
-    public static final int MAX_DAYS_TYPICAL = 31;
+    public static final int MAX_DAYS_SHORT = 30;
+    public static final int MAX_DAYS_LONG = 31;
     public static final int MIN_MONTH = 1;
     public static final int MAX_MONTH = 12;
     public static final int MIN_YEAR = 0;
@@ -30,7 +31,6 @@ public class Date implements Comparable<Date> {
 
     public static final int FEBRUARY_NONLEAP_DAYS = 28;
     public static final int FEBRUARY_LEAP_DAYS = 29;
-    public static final int SHORT_MONTH_DAYS = 30;
 
     /**
      * Constructs a Date object with the specified month, day, and year.
@@ -150,25 +150,25 @@ public class Date implements Comparable<Date> {
      * @return true if the date is valid; return false otherwise
      */
     public boolean isValid() {
-        if ((day < 1) || (day > 31) || (month < 1) || (month > 12) || (year < 0)) {
+        if ((day < MIN_DAYS) || (day > MAX_DAYS_LONG) || (month < MIN_MONTH) || (month > MAX_MONTH) || (year < MIN_YEAR)) {
             return false;
         }
 
         //setting maxDays in each month
         int maxDays;
-        if (month == 2) {
+        if (month == FEBRUARY) {
             if (isLeap()) {
-                maxDays = 29;
+                maxDays = FEBRUARY_LEAP_DAYS;
             }
             else {
-                maxDays = 28;
+                maxDays = FEBRUARY_NONLEAP_DAYS;
             }
         }
-        else if ((month == 4) || (month == 6) || (month == 9) || (month == 11)) {
-            maxDays = 30;
+        else if ((month == APRIL) || (month == JUNE) || (month == SEPTEMBER) || (month == NOVEMBER)) {
+            maxDays = MAX_DAYS_SHORT;
         }
         else {
-            maxDays = 31;
+            maxDays = MAX_DAYS_LONG;
         }
 
         return (day <= maxDays);
