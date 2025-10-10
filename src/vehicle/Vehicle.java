@@ -3,17 +3,24 @@ package vehicle;
 import rental.Date;
 import rental.Frontend;
 import rental.Make;
+import rental.Campus;
+
+import java.util.Arrays;
 
 /**
  Vehicle class that contains information about the vehicle.
  It contains the string license plate, the Date it was obtained, the make of the car, and the mileage on the odometer.
  @author Lana Huang
  */
-public class Vehicle implements Comparable<Vehicle> {
-    private String plate; //license plate number
-    private Date obtained; //Date class described in the next page
-    private Make make; //Make is an enum class
-    private int mileage; //current reading on the odometer
+public abstract class Vehicle implements Comparable<Vehicle> {
+    protected String plate; //license plate number
+    protected Date obtained; //Date class described in the next page
+    protected Make make; //Make is an enum class
+    protected int mileage; //current reading on the odometer
+    protected Campus campus; //Campus is an enum class defining the campuses.
+
+    public abstract double charge(int mileageUsed); //charge per mile used
+    public abstract double surcharge(int mileageUsed, boolean surcharge);
 
     /**
      * Gets the mileage from an instance of Vehicle.
@@ -55,6 +62,17 @@ public class Vehicle implements Comparable<Vehicle> {
         return obtained;
     }
 
+    public String getType(String plate) {
+        switch (plate.substring(plate.length() - 1)){
+            case "X" -> { return "truck"; }
+            case "D" -> { return "utility"; }
+            case "S" -> { return "sedan"; }
+            default -> {
+                return null;
+            }
+        }
+    }
+
     /**
      * Constructs a Vehicle
      * @param plate
@@ -91,6 +109,7 @@ public class Vehicle implements Comparable<Vehicle> {
             this.obtained = new Date(dataToken[2]);
             this.make = Make.valueOf(dataToken[3].toUpperCase());
             this.mileage = Integer.parseInt(dataToken[4]);
+            this.campus = Campus.valueOf(Frontend.capitalize(dataToken[5]));
         }
     }
 
@@ -101,17 +120,21 @@ public class Vehicle implements Comparable<Vehicle> {
      */
     public static boolean isValidVehicle(String[] dataToken) {
         Date obtained = new Date(dataToken[2]);
-        int mileage = Integer.parseInt(dataToken[4]);
 
-        //check date
         if (!obtained.isCalendarDateValid(dataToken[2])) {
             return false;
         } else if (!Make.isValidMake(dataToken[3])) {
             return false;
-        } else if (!Vehicle.isValidMileage(mileage)) {
+        } else if (!Vehicle.isValidMileage(dataToken[4])) {
+            return false;
+        } else if (!isValidPlate(dataToken[1])) {
+            return false;
+        } else if (!Campus.isValidCampus(dataToken[5])) {
             return false;
         } else { return true; }
+
     }
+
 
     /**
      * Checks if the plate string is a valid plate.
@@ -122,15 +145,21 @@ public class Vehicle implements Comparable<Vehicle> {
     public static boolean isValidPlate(String plate) {
         plate = plate.trim();
         if (plate.length() != 6){
+            Frontend.printInvalidPlateMessage("6 Character Error", plate);
             return false;
         }
-        for (int i = 0; i < plate.length(); i++) {
-            if(i != 5 && !Character.isDigit(plate.charAt(i))){
+
+        for (int i = 0; i < plate.length()-1; i++) {
+            if(!Character.isDigit(plate.charAt(i))){
+                Frontend.printInvalidPlateMessage("First 5 Numbers Error", plate);
                 return false;
             }
-            else if (plate.charAt(i) != 'S' || plate.charAt(i) != 'D' || plate.charAt(i) != 'X'){
-                return false;
-            }
+        }
+        String end = plate.substring(plate.length() - 1);
+
+        if (!end.equals("S") && !end.equals("D") && !end.equals("X")){
+            Frontend.printInvalidPlateMessage("Not Valid Vehicle Type Error", plate);
+            return false;
         }
         return true;
     }
@@ -140,15 +169,25 @@ public class Vehicle implements Comparable<Vehicle> {
      * @param mileage The mileage to be checked.
      * @return true if the mileage is greater than 0; false otherwise.
      */
-    public static boolean isValidMileage(int mileage) {
-        if (mileage > 0) {
-            return true;
-        }
-        else {
-            Frontend.printInvalidMileageMessage(mileage);
+
+    public static boolean isValidMileage(String mileage) {
+        try {
+            int intmileage = Integer.parseInt(mileage);
+
+            if (intmileage > 0) {
+                return true;
+            }
+            else {
+                Frontend.printInvalidMileageMessage(intmileage);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("For input string:" + '"' + mileage + '"' + " - not a valid mileage");
             return false;
         }
+
     }
+
 
     /**
      * Override equals method that checks if the vehicles are equal.
@@ -171,7 +210,7 @@ public class Vehicle implements Comparable<Vehicle> {
      */
     @Override
     public String toString() {
-        return plate + ":" + make + ":" + obtained + " [mileage:" + mileage + "]";
+        return plate + "[" + make + ":" + getType(plate) + "] " + obtained + " [mileage:" + mileage + "] [" + campus + "]";
     }
 
     /**
@@ -188,22 +227,22 @@ public class Vehicle implements Comparable<Vehicle> {
      * Testbed for 3 test cases of Testing Specifications for compareTo method.
      * @param args
      */
-    public static void main(String[] args) {
-        //1 output
-        Vehicle vehicle1 = new Vehicle("80671S", null, Make.CHEVY, 10293);
-        Vehicle vehicle2 = new Vehicle("71707X", null, Make.CHEVY, 10293);
-        System.out.println(vehicle1.compareTo(vehicle2));
-
-        //0 output
-        Vehicle vehicle3 = new Vehicle("58718D", null, Make.CHEVY, 10293);
-        Vehicle vehicle4 = new Vehicle("58718D", null, Make.CHEVY, 10293);
-        System.out.println(vehicle3.compareTo(vehicle4));
-
-        //-1 output
-        Vehicle vehicle5 = new Vehicle("58718D", null, Make.CHEVY, 10293);
-        Vehicle vehicle6 = new Vehicle("65402A", null, Make.CHEVY, 10293);
-        System.out.println(vehicle5.compareTo(vehicle6));
-
-
-    }
+//    public static void main(String[] args) {
+//        //1 output
+//        Vehicle vehicle1 = new Vehicle("80671S", null, Make.CHEVY, 10293);
+//        Vehicle vehicle2 = new Vehicle("71707X", null, Make.CHEVY, 10293);
+//        System.out.println(vehicle1.compareTo(vehicle2));
+//
+//        //0 output
+//        Vehicle vehicle3 = new Vehicle("58718D", null, Make.CHEVY, 10293);
+//        Vehicle vehicle4 = new Vehicle("58718D", null, Make.CHEVY, 10293);
+//        System.out.println(vehicle3.compareTo(vehicle4));
+//
+//        //-1 output
+//        Vehicle vehicle5 = new Vehicle("58718D", null, Make.CHEVY, 10293);
+//        Vehicle vehicle6 = new Vehicle("65402A", null, Make.CHEVY, 10293);
+//        System.out.println(vehicle5.compareTo(vehicle6));
+//
+//
+//    }
 }

@@ -1,9 +1,13 @@
 package rental;
 
+import vehicle.Sedan;
+import vehicle.Truck;
+import vehicle.Utility;
 import vehicle.Vehicle;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -79,11 +83,19 @@ public class Frontend {
             int numVehiclesLoaded = 0;
 
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine().trim();
-                line = "A " + line;
-                String[] dataToken = line.split(" ");
+                String[] dataToken = ("A " + scanner.nextLine().trim()).split("\\s+");
+
                 if (Vehicle.isValidVehicle(dataToken)) {
-                    Vehicle newVehicle = new Vehicle(dataToken);
+                    Vehicle newVehicle = null;
+                    switch (dataToken[1].substring(dataToken[1].length() - 1)){
+                        case "X" -> newVehicle = new Truck(dataToken);
+                        case "D" -> newVehicle = new Utility(dataToken);
+                        case "S" -> newVehicle = new Sedan(dataToken);
+                        default -> {
+                            System.out.println("Unknown vehicle type: " + dataToken[1]);
+                            return;
+                        }
+                    }
                     if (!fleet.contains(newVehicle)) {
                         fleet.add(newVehicle);
                         numVehiclesLoaded++;
@@ -104,12 +116,27 @@ public class Frontend {
      * @param dataToken the array containing vehicle data
      */
     public static void addVehicle(String[] dataToken) {
+        if (dataToken.length != 6) {
+            System.out.println("Missing data tokens for adding a vehicle.");
+            return;
+        }
         if (Vehicle.isValidVehicle(dataToken)) {
-            Vehicle newVehicle = new Vehicle(dataToken);
-            fleet.add(newVehicle);
+            Vehicle newVehicle = null;
 
-            String vehicleConfirmation = newVehicle.toString() + " has been added to the fleet.";
-            System.out.println(vehicleConfirmation);
+            switch (dataToken[1].substring(dataToken[1].length() - 1)){
+                case "X" -> newVehicle = new Truck(dataToken);
+                case "D" -> newVehicle = new Utility(dataToken);
+                case "S" -> newVehicle = new Sedan(dataToken);
+                default -> {
+                    System.out.println("Unknown vehicle type: " + dataToken[1]);
+                    return;
+                }
+            }
+            if (!fleet.contains(newVehicle)) {
+                fleet.add(newVehicle);
+                String vehicleConfirmation = newVehicle.toString() + " has been added to the fleet.";
+                System.out.println(vehicleConfirmation);
+            }
         } else { return; }
     }
 
@@ -137,7 +164,7 @@ public class Frontend {
      */
     public static void removeVehicle(String[] dataToken) {
         String plate = dataToken[1];
-        Vehicle temp = new Vehicle(plate);
+        Vehicle temp = new Truck(plate);
         if(!bookings.isVehicleBooked(plate)) {
             fleet.remove(temp);
         } else {
@@ -152,6 +179,11 @@ public class Frontend {
     public static void printNotInFleetMessage(Vehicle vehicle) {
         String notInFleetMessage = vehicle.getPlate() + " is not in the fleet.";
         System.out.println(notInFleetMessage);
+    }
+
+    public static void printInvalidCampusMessage(String campus) {
+        String invalidCampusMessage = campus + " - invalid location.";
+        System.out.println(invalidCampusMessage);
     }
 
     /**
@@ -254,6 +286,14 @@ public class Frontend {
         }
     }
 
+    public static void printInvalidPlateMessage(String errorType, String plate) {
+        switch (errorType) {
+            case "6 Character Error" -> System.out.println(plate + " - license plate number must be exactly 6 characters.");
+            case "Not Valid Vehicle Type Error" -> System.out.println(plate + " - last character is not a valid vehicle type.");
+            case "First 5 Numbers Error" -> System.out.println(plate + " - first 5 characters must be numbers.");
+        }
+    }
+
     /**
      * Prints a confirmation message when a booking is successfully canceled.
      * @param begin the beginning date of the canceled booking
@@ -306,18 +346,22 @@ public class Frontend {
     public static void returnVehicle(String[] dataToken) {
         Date returnDate = new Date(dataToken[1]);
         String plate = dataToken[2];
+        if (!Vehicle.isValidMileage(dataToken[3])) {
+            return;
+        }
         int mileage = Integer.parseInt(dataToken[3]);
 
         if (bookings.findBookingForReturnVehicle(returnDate, plate) == null){
             String cannotFindBookingMessage = plate + " booked with ending date " + returnDate + " - cannot find the booking.";
             System.out.println(cannotFindBookingMessage);
             return;
+
         } else if (!bookings.isReturnEarliestEnd(returnDate)) {
             String notEarliestEndDateMessage = plate + " booked with ending date " + returnDate + " - returning not in order of ending date.";
             System.out.println(notEarliestEndDateMessage);
             return;
 
-        } else if (!Vehicle.isValidMileage(mileage)) {
+        } else if (!Vehicle.isValidMileage(dataToken[3])) {
             return;
 
         } else if(bookings.findBookingForReturnVehicle(returnDate,plate).getVehicle().getMileage() >= mileage) {
@@ -336,6 +380,11 @@ public class Frontend {
 
             System.out.println("Trip completed: " + newTrip.toString());
         }
+    }
+
+    public static String capitalize(String string) {
+        if (string == null || string.isEmpty()) return string;
+        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
     /**

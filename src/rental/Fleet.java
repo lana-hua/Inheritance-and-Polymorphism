@@ -1,5 +1,6 @@
 package rental;
 
+import vehicle.Truck;
 import vehicle.Vehicle;
 
 /**
@@ -88,7 +89,7 @@ public class Fleet {
      * @return vehicle The vehicle found in the fleet.
      */
     public Vehicle getVehicle(String plate) {
-        Vehicle vehicle = new Vehicle(plate);
+        Vehicle vehicle = new Truck(plate);
         return fleet[find(vehicle)];
     }
 
