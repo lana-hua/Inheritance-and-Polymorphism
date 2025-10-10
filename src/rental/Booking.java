@@ -1,5 +1,6 @@
 package rental;
 
+import vehicle.Truck;
 import vehicle.Vehicle;
 
 /**
@@ -79,7 +80,7 @@ public class Booking {
         Date end = new Date(dataToken[2]);
         String plate = dataToken[3];
         String employee = dataToken[4];
-        Vehicle vehicle = new Vehicle(plate);
+        Vehicle vehicle = new Truck(plate);
         String dropoff = dataToken[5];
 
         if (!Frontend.fleet.contains(vehicle)) {
