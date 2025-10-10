@@ -7,6 +7,7 @@ import vehicle.Vehicle;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.security.spec.ECField;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -163,13 +164,22 @@ public class Frontend {
      * @param dataToken the array containing vehicle plate data
      */
     public static void removeVehicle(String[] dataToken) {
-        String plate = dataToken[1];
-        Vehicle temp = new Truck(plate);
-        if(!bookings.isVehicleBooked(plate)) {
-            fleet.remove(temp);
-        } else {
-            System.out.println(plate + " - has existing bookings; cannot be removed.");
+        try {
+            String plate = dataToken[1];
+            Vehicle temp = new Truck(plate);
+
+            if (!bookings.isVehicleBooked(plate)) {
+                fleet.remove(temp);
+            } else if (!fleet.contains(temp)) {
+                System.out.println(plate + " - is not in the fleet.");
+            } else {
+                System.out.println(plate + " - has existing bookings; cannot be removed.");
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Missing data tokens for removing a vehicle.");
+            return;
         }
+
     }
 
     /**
@@ -191,7 +201,7 @@ public class Frontend {
      * @param vehicle the vehicle that was removed
      */
     public static void printRemovedVehicleMessage(Vehicle vehicle) {
-        String removedMessage = vehicle.toString() + " has been removed from the fleet.";
+        String removedMessage = vehicle.getPlate() + " has been removed from the fleet.";
         System.out.println(removedMessage);
     }
 
