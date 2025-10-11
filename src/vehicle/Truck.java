@@ -4,6 +4,10 @@ import rental.Date;
 import rental.Make;
 
 public class Truck extends Vehicle{
+    private String type = "truck";
+    private final double per_mile = 2.99;
+    private final double flat_fee = 39.99;
+
     public Truck(String plate) {
         super(plate);
     }
@@ -18,11 +22,11 @@ public class Truck extends Vehicle{
 
     @Override
     public double charge(int mileageUsed) {
-        return 0;
+        return mileageUsed * 2.99;
     }
 
     @Override
     public double surcharge(int mileageUsed, boolean surcharge) {
-        return 0;
+        return flat_fee;
     }
 }

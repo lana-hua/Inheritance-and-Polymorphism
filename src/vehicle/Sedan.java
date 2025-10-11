@@ -4,7 +4,10 @@ import rental.Date;
 import rental.Make;
 
 public class Sedan extends Vehicle{
-    private String type;
+    private String type = "sedan";
+    private final double charge_per_mile = 1.79;
+    private final double surcharge_per_mile = .25;
+    private final double surcharge_max = 32.99;
 
     public Sedan(String plate) {
         super(plate);
