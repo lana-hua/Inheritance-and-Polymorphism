@@ -156,36 +156,16 @@ public class Reservation {
      * @return true if there is a vehicle conflict; return false otherwise
      */
     public boolean isVehicleConflict(Date begin, Date end, String plate) {
-        Calendar testStart = Calendar.getInstance();
-        testStart.set(Calendar.DAY_OF_MONTH, begin.getDay());
-        testStart.set(Calendar.MONTH, begin.getMonth() - 1);
-        testStart.set(Calendar.YEAR, begin.getYear());
+        for (int i = 0; i < size; i++){
+            Booking existingBooking = bookings[i];
 
-        Calendar testEnd = Calendar.getInstance();
-        testEnd.set(Calendar.DAY_OF_MONTH, end.getDay());
-        testEnd.set(Calendar.MONTH, end.getMonth() - 1);
-        testEnd.set(Calendar.YEAR, end.getYear());
+            if (existingBooking.getVehicle().getPlate().equals(plate)) {
+                Date existingBegin = existingBooking.getBegin();
+                Date existingEnd = existingBooking.getEnd();
 
-        Calendar bookingStart = Calendar.getInstance();
-        Calendar bookingEnd = Calendar.getInstance();
+                boolean overlaps = (begin.compareTo(existingEnd) <= 0) && (end.compareTo(existingBegin) >= 0);
 
-        for (int i = 0; i < Frontend.bookings.getSize(); i++) {
-            if (Frontend.bookings.bookings[i].getVehicle().getPlate().equalsIgnoreCase(plate)) {
-                bookingStart.set(Calendar.DAY_OF_MONTH, Frontend.bookings.bookings[i].getBegin().getDay());
-                bookingStart.set(Calendar.MONTH, Frontend.bookings.bookings[i].getBegin().getMonth() - 1);
-                bookingStart.set(Calendar.YEAR, Frontend.bookings.bookings[i].getBegin().getYear());
-
-                bookingEnd.set(Calendar.DAY_OF_MONTH, Frontend.bookings.bookings[i].getEnd().getDay());
-                bookingEnd.set(Calendar.MONTH, Frontend.bookings.bookings[i].getEnd().getMonth() - 1);
-                bookingEnd.set(Calendar.YEAR, Frontend.bookings.bookings[i].getEnd().getYear());
-
-                boolean isStartWithinRange = testStart.after(bookingStart) && testStart.before(bookingEnd);
-                boolean isEndWithinRange = testEnd.after(bookingStart) && testEnd.before(bookingEnd);
-                boolean isBookedStartWithinRange = bookingStart.after(testStart) && bookingStart.before(testEnd);
-                boolean isBookedEndWithinRange = bookingEnd.after(testStart) && bookingEnd.before(testEnd);
-                boolean isSame = testStart.equals(bookingStart) || testEnd.equals(bookingEnd) || testEnd.equals(bookingStart) || testStart.equals(bookingEnd);
-
-                if ((isStartWithinRange) || (isEndWithinRange) || (isBookedStartWithinRange) || (isBookedEndWithinRange) || (isSame)) {
+                if (overlaps) {
                     return true;
                 }
             }
@@ -200,39 +180,18 @@ public class Reservation {
      * @param employee the employee name to check
      * @return the conflicting booking's begin date if conflict exists; return null otherwise
      */
-    public Date isEmployeeConflict(Date begin, Date end, String employee) {
-        Calendar testStart = Calendar.getInstance();
-        testStart.set(Calendar.DAY_OF_MONTH, begin.getDay());
-        testStart.set(Calendar.MONTH, begin.getMonth() - 1);
-        testStart.set(Calendar.YEAR, begin.getYear());
+    public Booking isEmployeeConflict(Date begin, Date end, String employee) {
+        for (int i = 0; i < size; i++){
+            Booking existingBooking = bookings[i];
 
-        Calendar testEnd = Calendar.getInstance();
-        testEnd.set(Calendar.DAY_OF_MONTH, end.getDay());
-        testEnd.set(Calendar.MONTH, end.getMonth() - 1);
-        testEnd.set(Calendar.YEAR, end.getYear());
+            if (existingBooking.getEmployee().name().equalsIgnoreCase(employee)) {
+                Date existingBegin = existingBooking.getBegin();
+                Date existingEnd = existingBooking.getEnd();
 
-        Calendar bookingStart = Calendar.getInstance();
-        Calendar bookingEnd = Calendar.getInstance();
+                boolean overlaps = (begin.compareTo(existingEnd) <= 0) && (end.compareTo(existingBegin) >= 0);
 
-        for (int i = 0; i < Frontend.bookings.getSize(); i++) {
-            if (Frontend.bookings.bookings[i].getEmployee().name().equalsIgnoreCase(employee)) {
-                bookingStart.set(Calendar.DAY_OF_MONTH, Frontend.bookings.bookings[i].getBegin().getDay());
-                bookingStart.set(Calendar.MONTH, Frontend.bookings.bookings[i].getBegin().getMonth() - 1);
-                bookingStart.set(Calendar.YEAR, Frontend.bookings.bookings[i].getBegin().getYear());
-
-                bookingEnd.set(Calendar.DAY_OF_MONTH, Frontend.bookings.bookings[i].getEnd().getDay());
-                bookingEnd.set(Calendar.MONTH, Frontend.bookings.bookings[i].getEnd().getMonth() - 1);
-                bookingEnd.set(Calendar.YEAR, Frontend.bookings.bookings[i].getEnd().getYear());
-
-                boolean isStartWithinRange = testStart.after(bookingStart) && testStart.before(bookingEnd);
-                boolean isEndWithinRange = testEnd.after(bookingStart) && testEnd.before(bookingEnd);
-                boolean isBookedStartWithinRange = bookingStart.after(testStart) && bookingStart.before(testEnd);
-                boolean isBookedEndWithinRange = bookingEnd.after(testStart) && bookingEnd.before(testEnd);
-                boolean isBeginSame = testStart.equals(bookingStart);
-                boolean isEndSame = testEnd.equals(bookingEnd);
-
-                if ((isStartWithinRange) || (isEndWithinRange) || (isBookedStartWithinRange) || (isBookedEndWithinRange) || (isBeginSame) || (isEndSame)) {
-                    return Frontend.bookings.bookings[i].getBegin();
+                if (overlaps) {
+                    return existingBooking;
                 }
             }
         }
@@ -296,11 +255,11 @@ public class Reservation {
             }
         }
 
-        System.out.println("*List of reservations ordered by license plate number and beginning date.");
+        System.out.println("*List of reservations ordered by location/license plate/beginning date.");
         for (int i = 0; i < size; i++) {
             System.out.println(bookings[i].toString());
         }
-        System.out.println("*end of list.\n");
+        System.out.println("*end of util.\n");
     } //ordered by city, then plate, and then beginning date
 
     /**
@@ -341,8 +300,8 @@ public class Reservation {
                 currentDept = bookingDept;
                 System.out.println("--" + currentDept + "--");
             }
-            System.out.println(bookings[i].toString());
+            System.out.println("\t" + bookings[i].toString());
         }
-        System.out.println("*end of list.\n");
+        System.out.println("*end of util.\n");
     } //ordered by department then by employee
 }

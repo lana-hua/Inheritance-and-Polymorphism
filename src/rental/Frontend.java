@@ -291,7 +291,7 @@ public class Frontend {
             case "Vehicle does not Exist Error" -> System.out.println(plate + " is not in the fleet.");
             case "Vehicle not Available Error" -> System.out.println(plate + " - booking with " + begin + " ~ " + end + " not available.");
             case "Employee not Eligible Error" -> System.out.println(employee + " - not an eligible employee to book.");
-            case "Employee Conflict Error" -> System.out.println(employee + " - has an existing booking conflicting with the beginning date " + begin);
+            case "Employee Conflict Error" -> System.out.println(employee + " - has an existing booking conflicting with booking date " + begin + " ~ " + end);
             case "Campus Invalid Location" -> System.out.println(dropoff + " - invalid location");
         }
     }

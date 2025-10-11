@@ -65,6 +65,12 @@ public class Booking {
     }
 
     /**
+     * Returns the campus the individual is being picked up on in this booking.
+     * @return the campus pickup associated with this booking
+     */
+    public Campus getCampusPickup() { return vehicle.getCampus();}
+
+    /**
      * Returns the campus the individual is being dropped off on in this booking.
      * @return the campus dropoff associated with this booking
      */
@@ -93,7 +99,6 @@ public class Booking {
             Frontend.printInvalidBookingMessage("Employee not Eligible Error", null, employee, null,null, null);
             return false;
         } else if (Frontend.bookings.isEmployeeConflict(begin, end, employee) != null) {
-            Date start = Frontend.bookings.isEmployeeConflict(begin, end, employee);
             Frontend.printInvalidBookingMessage("Employee Conflict Error", null, employee, begin, end, null);
             return false;
         } else if (!Campus.isValidCampus(dropoff)) {
@@ -156,7 +161,8 @@ public class Booking {
      */
     @Override
     public String toString(){
-        return (vehicle.toString() + " " + begin + " ~ " + end + " [dropoff:" + dropoff.name().toUpperCase() + "] [" + employee.name().toUpperCase() + "]");
+        return (vehicle.getPlate() + ":" + vehicle.getMake() + " [" + vehicle.getCampus() + "]" + " " + begin + " ~ " + end + " [drop off:" + dropoff.name()
+        + "] [" + employee.name().toUpperCase() + "]");
     }
 
 }

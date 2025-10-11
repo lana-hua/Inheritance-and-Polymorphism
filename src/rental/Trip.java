@@ -72,6 +72,11 @@ public class Trip {
     @Override
     public String toString(){
         int mileageUsed = endMileage - beginMileage;
-        return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " original mileage: " + beginMileage + " current mileage: " + endMileage + " mileage used: " + mileageUsed);
+        if (booking.getCampusPickup().equals(booking.getCampusDropoff())){
+            return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " mileage(old): " + beginMileage + " mileage(new): " + endMileage + " mileage(used): " + mileageUsed + " [dropped off: " + booking.getCampusDropoff() + "]" + " [picked up: " + booking.getCampusPickup());
+        }
+        else {
+            return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " mileage(old): " + beginMileage + " mileage(new): " + endMileage + " mileage(used): " + mileageUsed + " [dropped off: " + booking.getCampusDropoff() + "**]" + " [picked up: " + booking.getCampusPickup());
+        }
     }
 }
