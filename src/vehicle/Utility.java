@@ -4,6 +4,11 @@ import rental.Date;
 import rental.Make;
 
 public class Utility extends Vehicle{
+    private String type = "utility";
+    private final double charge_per_mile = 1.99;
+    private final double surcharge_per_mile = .30;
+    private final double surcharge_max = 35.99;
+
     public Utility(String plate) {
         super(plate);
     }
@@ -18,11 +23,15 @@ public class Utility extends Vehicle{
 
     @Override
     public double charge(int mileageUsed) {
-        return 0;
+        return mileageUsed * charge_per_mile;
     }
 
     @Override
     public double surcharge(int mileageUsed, boolean surcharge) {
-        return 0;
+        double cost = mileageUsed * surcharge_per_mile;
+        if (cost > surcharge_max) {
+            return surcharge_max;
+        }
+        return cost;
     }
 }
