@@ -62,6 +62,14 @@ public abstract class Vehicle implements Comparable<Vehicle> {
         return obtained;
     }
 
+    /**
+     * Gets campus from an instance of Vehicle.
+     * @return campus
+     */
+    public Campus getCampus() {
+        return campus;
+    }
+
     public String getType(String plate) {
         switch (plate.substring(plate.length() - 1)){
             case "X" -> { return "truck"; }
