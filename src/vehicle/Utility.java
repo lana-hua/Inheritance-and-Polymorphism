@@ -4,7 +4,7 @@ import rental.Date;
 import rental.Make;
 
 public class Utility extends Vehicle{
-    private String type = "utility";
+    private final String type = "utility";
     private final double charge_per_mile = 1.99;
     private final double surcharge_per_mile = .30;
     private final double surcharge_max = 35.99;
@@ -33,5 +33,9 @@ public class Utility extends Vehicle{
             return surcharge_max;
         }
         return cost;
+    }
+
+    public String getType() {
+        return type;
     }
 }
