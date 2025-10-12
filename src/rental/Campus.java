@@ -42,7 +42,6 @@ public enum Campus {
         }
     }
 
-
     @Override
     public String toString() {
         return name() +  ":" + city;
