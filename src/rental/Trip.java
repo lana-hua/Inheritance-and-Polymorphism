@@ -22,6 +22,7 @@ public class Trip {
         this.booking = booking;
         this.beginMileage = beginMileage;
         this.endMileage = endMileage;
+        this.surcharge = !booking.getCampusPickup().name().equals(booking.getCampusDropoff().name());
     }
 
     /**
@@ -49,6 +50,14 @@ public class Trip {
     }
 
     /**
+     * Checks if the vehicle has surcharge for the trip
+     * @return true if there is a surcharge; return false otherwise
+     */
+    public boolean hasSurcharge(){
+        return surcharge;
+    }
+
+    /**
      * Compares if the trip object is the same as the object given
      * @param comparison the object to compare with the trip
      * @return true if the objects are equal; return false otherwise
@@ -73,15 +82,13 @@ public class Trip {
     @Override
     public String toString(){
         int mileageUsed = endMileage - beginMileage;
-        String surcharge_boolean = "";
-        if (surcharge) {
-            surcharge_boolean = "**";
-        }
-        if (booking.getCampusPickup().equals(booking.getCampusDropoff())){
-            return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " mileage(old): " + beginMileage + " mileage(new): " + endMileage + " mileage(used): " + mileageUsed + " [dropped off: " + booking.getCampusDropoff() + "]" + " [picked up: " + booking.getCampusPickup());
+      
+        boolean checkSurcharge = hasSurcharge();
+        if (checkSurcharge){
+            return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " mileage(old): " + beginMileage + " mileage(new): " + endMileage + " mileage(used): " + mileageUsed + " [dropped off: " + booking.getCampusDropoff().name() + "**]" + " [picked up: " + booking.getCampusPickup().name() + "]");
         }
         else {
-            return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " mileage(old): " + beginMileage + " mileage(new): " + endMileage + " mileage(used): " + mileageUsed + " [dropped off: " + booking.getCampusDropoff() + "**]" + " [picked up: " + booking.getCampusPickup());
+            return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " mileage(old): " + beginMileage + " mileage(new): " + endMileage + " mileage(used): " + mileageUsed + " [dropped off: " + booking.getCampusDropoff().name() + "]" + " [picked up: " + booking.getCampusPickup().name() + "]");
         }
     }
 }

@@ -338,7 +338,7 @@ public class Frontend {
             return;
 
         } else if (!bookings.isReturnEarliestEnd(returnDate)) {
-            String notEarliestEndDateMessage = plate + " booked with ending date " + returnDate + " - returning not in order of ending date.";
+            String notEarliestEndDateMessage = plate + " booked with ending date " + returnDate + " - returning not in order of end date.";
             System.out.println(notEarliestEndDateMessage);
             return;
 
@@ -363,6 +363,11 @@ public class Frontend {
         }
     }
 
+    /**
+     * Converts a String into the format where the first character is capitalized and the rest after is lowercase.
+     * @param string the string that will have its capitalization format changed
+     * @return a formatted string with capitalization of the first character and every character after is lowercase
+     */
     public static String capitalize(String string) {
         if (string == null || string.isEmpty()) return string;
         return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
