@@ -73,6 +73,10 @@ public class Trip {
     @Override
     public String toString(){
         int mileageUsed = endMileage - beginMileage;
+        String surcharge_boolean = "";
+        if (surcharge) {
+            surcharge_boolean = "**";
+        }
         if (booking.getCampusPickup().equals(booking.getCampusDropoff())){
             return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " mileage(old): " + beginMileage + " mileage(new): " + endMileage + " mileage(used): " + mileageUsed + " [dropped off: " + booking.getCampusDropoff() + "]" + " [picked up: " + booking.getCampusPickup());
         }

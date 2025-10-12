@@ -1,7 +1,14 @@
 package rental;
 
+import util.List;
+import vehicle.Sedan;
 import vehicle.Truck;
+import vehicle.Utility;
 import vehicle.Vehicle;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * Fleet class that manages a collection of Vehicles.
@@ -9,142 +16,69 @@ import vehicle.Vehicle;
  *  It also allows the user to print the fleet by make and date.
  * @author Lana Huang
  */
-public class Fleet {
-    private static final int CAPACITY = 4; //initial capacity
-    private static final int NOT_FOUND = -1;
-    private Vehicle[] fleet;
-    private int size; //current number of vehicles in the fleet
+public class Fleet extends List<Vehicle> {
 
     /**
      * Constructs a fleet with the initial capacity size, CAPACITY, and a size of 0.
      */
     public Fleet() {
-        fleet = new Vehicle[CAPACITY]; // initialize array with starting capacity
-        size = 0;
-    }
-
-    /**
-     * Finds the index of the given vehicle in the fleet.
-     * If it does not exist in the fleet it returns -1, NOT_FOUND.
-     * @param vehicle The vehicle to be found in the fleet.
-     * @return index if found; -1, NOT_FOUND otherwise.
-     */
-    private int find(Vehicle vehicle) {
-        if (contains(vehicle)) {
-            for (int i = 0; i < size; i++){
-                if (fleet[i].getPlate().compareTo(vehicle.getPlate()) == 0){
-                    return i;
-                }
-            }
-        }
-        return NOT_FOUND;
-    }
-
-    /**
-     * Grows the array of the fleet by 4 if the fleet reaches capacity
-     */
-    private void grow() {
-        Vehicle[] newArray = new Vehicle[size+4];
-
-        if (size >= 0) System.arraycopy(fleet, 0, newArray, 0, fleet.length);
-
-        fleet = newArray;
-    }
-
-    /**
-     * Add given vehicle to the fleet.
-     * If the fleet is already at capacity, call grow to increase capacity.
-     * @param vehicle Vehicle to be added to the fleet.
-     */
-    public void add(Vehicle vehicle) {
-        if (!contains(vehicle)) {
-            if (size == fleet.length) {
-                grow();
-            }
-            fleet[size] = vehicle;
-            size++;
-        }
-    }
-
-    /**
-     * Remove the given vehicle from the fleet
-     * It does nothing if vehicle is not in fleet. It overwrites with the last vehicle in the fleet
-     * @param vehicle the vehicle to be removed from the fleet
-     */
-    public void remove(Vehicle vehicle) {
-        int index = find(vehicle);
-        if (index != NOT_FOUND){
-            Frontend.printRemovedVehicleMessage(fleet[index]);
-            fleet[index] = fleet[size - 1];
-            fleet[size - 1] = null;
-            size--;
-        } else {
-            Frontend.printNotInFleetMessage(vehicle);
-        }
+        super();
     }
 
     /**
      * Gets the vehicle given the license plate number from the fleet.
      * @param plate The plate number to be found in the fleet.
-     * @return vehicle The vehicle found in the fleet.
+     * @return vehicle The vehicle found in the fleet returns null if it cannot find it.
      */
-    public Vehicle getVehicle(String plate) {
-        Vehicle vehicle = new Truck(plate);
-        return fleet[find(vehicle)];
-    }
-
-    /**
-     * Checks if the fleet contains a vehicle given the vehicle.
-     * Checks the plate number to match the vehicle.
-     * @param vehicle The vehicle being checked against the fleet.
-     * @return true if the vehicle is found; false otherwise.
-     */
-    public boolean contains(Vehicle vehicle) {
-        for (int i = 0; i < size; i++){
-            if (fleet[i].getPlate().compareTo(vehicle.getPlate()) == 0){
-                return true;
+    public static Vehicle getVehicle(String plate) {
+        for (int i = 0; i < Frontend.fleet.size(); i++) {
+            if (Frontend.fleet.get(i).getPlate().equals(plate)) {
+                return Frontend.fleet.get(i);
             }
         }
-        return false;
+        return null;
     }
 
     /**
-     * Prints the fleet by the make then by the date obtained
-     * Uses selection sort methods to loop through the fleet to find the minimum index of the minimum element.
+     * Loads vehicles into the Fleet via text file.
+     * File needs to be placed in the top-level project folder.
+     * Should not add the same vehicle if loaded twice.
      */
-    public void printByMake() {
-        if (size == 0) {
-            Frontend.printNoVehicleInFleet();
+    public static Integer loadVehicles(List<Vehicle> fleet) {
+        try {
+            File file = new File("vehicles.txt");
+            Scanner scanner = new Scanner(new File(file.toURI()));
+            int numVehiclesLoaded = 0;
 
-        } else {
-            System.out.println("*List of vehicles in the fleet, ordered by make and date obtained.");
-            for (int i = 0; i < size - 1; i++) {
-                int minIndex = i;
-                for (int j = i + 1; j < size; j++) {
-                    int compareMake = fleet[j].getMake().compareTo(fleet[minIndex].getMake());
-                    if (compareMake < 0) {
-                        minIndex = j;
-                    } else if (compareMake == 0) {
-                        int compareDate = fleet[j].getDate().compareTo(fleet[minIndex].getDate());
-                        if (compareDate < 0) {
-                            minIndex = j;
+            while (scanner.hasNextLine()) {
+                String[] dataToken = ("A " + scanner.nextLine().trim()).split("\\s+");
+
+                if (Vehicle.isValidVehicle(dataToken)) {
+                    Vehicle newVehicle = null;
+                    switch (dataToken[1].substring(dataToken[1].length() - 1)){
+                        case "X" -> newVehicle = new Truck(dataToken);
+                        case "D" -> newVehicle = new Utility(dataToken);
+                        case "S" -> newVehicle = new Sedan(dataToken);
+                        default -> {
+                            Frontend.printLoadVehicleMessage("Unknown Vehicle Type", dataToken[1], 0);
+                            return 0;
                         }
                     }
-
-                }
-                if (minIndex != i) {
-                    Vehicle temp = fleet[i];
-                    fleet[i] = fleet[minIndex];
-                    fleet[minIndex] = temp;
-                }
+                    if (!fleet.contains(newVehicle)) {
+                        fleet.add(newVehicle);
+                        numVehiclesLoaded++;
+                    }
+                } else { return 0; }
             }
-
-            for (int i = 0; i < size; i++) {
-                System.out.println(fleet[i]);
-            }
-
-            System.out.println("*end of list.\n");
+            Frontend.printLoadVehicleMessage("Vehicles Loaded Message", null, numVehiclesLoaded);
+            scanner.close();
+            return numVehiclesLoaded;
         }
+        catch (FileNotFoundException exception) {
+            Frontend.printLoadVehicleMessage("Text file not found", exception.getMessage(), 0);
 
+        }
+        return null;
     }
+
 }

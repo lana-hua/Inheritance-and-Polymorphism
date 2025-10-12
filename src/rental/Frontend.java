@@ -1,9 +1,11 @@
 package rental;
 
+import util.List;
 import vehicle.Sedan;
 import vehicle.Truck;
 import vehicle.Utility;
 import vehicle.Vehicle;
+import util.Sort;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +19,7 @@ import java.util.Scanner;
  * @authors Lana Huang, Sharon Chen
  */
 public class Frontend {
-  static Fleet fleet = new Fleet();
+  static List<Vehicle> fleet = new List<Vehicle>();
   static Reservation bookings = new Reservation();
   static TripList tripList = new TripList();
 
@@ -60,9 +62,9 @@ public class Frontend {
             case "D" -> removeVehicle(dataToken);
             case "B" -> bookVehicle(dataToken);
             case "C" -> cancelBooking(dataToken);
-            case "L" -> loadVehicles();
+            case "L" -> Fleet.loadVehicles(fleet);
             case "R" -> returnVehicle(dataToken);
-            case "PF" -> fleet.printByMake();//needs to be ordered by make then date
+            case "PF" -> Sort.printSortedFleet(fleet);//needs to be ordered by make then date
             case "PR" -> bookings.printByCity(); //needs to be ordered by city, then plate, then beginning date
             case "PD" -> bookings.printByDept();//needs to be ordered by department then by employee
             case "PT" -> tripList.print();//needs to be ordered by ending date
@@ -72,45 +74,6 @@ public class Frontend {
             }
         }
     }
-    /**
-     * Loads vehicles into the Fleet via text file.
-     * File needs to be placed in the top-level project folder.
-     * Should not add the same vehicle if loaded twice.
-     */
-    private static void loadVehicles() {
-        try {
-            File file = new File("vehicles.txt");
-            Scanner scanner = new Scanner(new File(file.toURI()));
-            int numVehiclesLoaded = 0;
-
-            while (scanner.hasNextLine()) {
-                String[] dataToken = ("A " + scanner.nextLine().trim()).split("\\s+");
-
-                if (Vehicle.isValidVehicle(dataToken)) {
-                    Vehicle newVehicle = null;
-                    switch (dataToken[1].substring(dataToken[1].length() - 1)){
-                        case "X" -> newVehicle = new Truck(dataToken);
-                        case "D" -> newVehicle = new Utility(dataToken);
-                        case "S" -> newVehicle = new Sedan(dataToken);
-                        default -> {
-                            System.out.println("Unknown vehicle type: " + dataToken[1]);
-                            return;
-                        }
-                    }
-                    if (!fleet.contains(newVehicle)) {
-                        fleet.add(newVehicle);
-                        numVehiclesLoaded++;
-                    }
-                } else { return; }
-            }
-            System.out.println(numVehiclesLoaded + " vehicles loaded.");
-            scanner.close();
-        }
-        catch (FileNotFoundException exception) {
-            System.out.println("Text file not found: " + exception.getMessage());
-        }
-    }
-
 
     /**
      * Adds a new vehicle to the fleet if the vehicle data is valid.
@@ -240,7 +203,7 @@ public class Frontend {
             Date begin = new Date(dataToken[1]);
             Date end = new Date(dataToken[2]);
             String plate = dataToken[3];
-            Vehicle vehicle = fleet.getVehicle(plate);
+            Vehicle vehicle = Fleet.getVehicle(plate);
             Employee employeeName = Employee.valueOf(dataToken[4].substring(0, 1).toUpperCase() + dataToken[4].toLowerCase().substring(1));
             Campus dropoff = Campus.valueOf(dataToken[5].substring(0,1).toUpperCase() + dataToken[5].toLowerCase().substring(1));
 
@@ -301,6 +264,14 @@ public class Frontend {
             case "6 Character Error" -> System.out.println(plate + " - license plate number must be exactly 6 characters.");
             case "Not Valid Vehicle Type Error" -> System.out.println(plate + " - last character is not a valid vehicle type.");
             case "First 5 Numbers Error" -> System.out.println(plate + " - first 5 characters must be numbers.");
+        }
+    }
+
+    public static void printLoadVehicleMessage(String messageType, String error, int numloaded) {
+        switch (messageType) {
+            case "Unknown Vehicle Type" -> System.out.println("Unknown vehicle type: " + error);
+            case "Vehicles Loaded Message" -> System.out.println(numloaded + " vehicles loaded.");
+            case "Text file not found" -> System.out.println("Text file not found: " + error);
         }
     }
 
