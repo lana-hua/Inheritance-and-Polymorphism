@@ -1,13 +1,141 @@
 package util;
 
-import rental.Booking;
-import rental.Campus;
-import rental.Date;
-import rental.Frontend;
+import rental.*;
 import vehicle.Vehicle;
+
 
 public class Sort {
     private Sort() {}
+
+    /**
+     * PC Command: Prints the cost report, ordered by department, including the charge and surcharge for each trip, and the department total for all charges.
+     */
+    public static void printCost(){
+        if (Frontend.tripList.getLast() == null) {
+            System.out.println("There is no archived trips for the cost report.");
+            return;
+        }
+
+        Trip[] trips = getAllTrips();
+        orderTripsByDept(trips, trips.length);
+
+        System.out.println("*List of charges ordered by department.");
+        String currentDept = "";
+        double deptTotal = 0.00;
+
+        for (int i = 0; i < trips.length; i++) {
+            String tripDept = trips[i].getBooking().getEmployee().getDepartment().toString();
+            if (!tripDept.equals(currentDept)) {
+                if (!currentDept.isEmpty()){
+                    System.out.println("  <*>Department total: $" + deptTotal);
+                    deptTotal = 0.00;
+                }
+                currentDept = tripDept;
+                System.out.println("--" + currentDept + "--");
+            }
+            int mileageUsed = trips[i].getEndMileage() - trips[i].getBeginMileage();
+            deptTotal += (trips[i].getBooking().getVehicle().charge(mileageUsed)) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge());
+
+            System.out.println("\t" + trips[i].toString());
+            System.out.println("\t\t[charge: $" + trips[i].getBooking().getVehicle().charge(mileageUsed) + "] [surcharge: " + trips[i].containsSurcharge() + "] [total charge: " + (trips[i].getBooking().getVehicle().charge(mileageUsed)) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge()) + "]");
+        }
+        System.out.println("*end of util.\n");
+    }
+
+    /**
+     * Print all completed trips in the circular linked list, tripList, ordered by end date.
+     * This method creates a visited boolean array that keeps track of Nodes already visited.
+     * It then repeatedly finds the unvisited node with the earliest date, prints the trip information.
+     * Then it marks the node as visited and continues this process until all are printed.
+     */
+    public static void printCompletedTrips() {
+        if (Frontend.tripList.getLast() == null) {
+            System.out.println("There is no completed trips.");
+            return;
+        }
+        System.out.println("*List of completed trips ordered by ending date.");
+
+        int length = 1;
+        Node ptr = Frontend.tripList.getLast().getNext();
+
+        while (ptr != Frontend.tripList.getLast()) {
+            length++;
+            ptr = ptr.getNext();
+        }
+
+        boolean[] visited = new boolean[length];
+
+        for (int i = 0; i < length; i++) {
+            Node minNode = null;
+            int minIndex = -1;
+
+            ptr = Frontend.tripList.getLast().getNext();
+            for (int j = 0; j < length; j++) {
+                if (!visited[j]) {
+                    if (minNode == null || (ptr.getTrip().getBooking().getEnd().compareTo(minNode.getTrip().getBooking().getEnd()) < 0)) {
+                        minNode = ptr;
+                        minIndex = j;
+                    }
+                }
+                ptr = ptr.getNext();
+            }
+            System.out.println(minNode.getTrip().toString());
+            visited[minIndex] = true;
+
+        }
+        System.out.println("*end of list.\n");
+    }
+
+    /**
+     * Swaps the order of trip i with trip j
+     * @param i the index of one of the trip being swapped
+     * @param j the index of the other trip being swapped
+     */
+    private static void swapTrips(Trip[] trips, int i, int j) {
+
+    }
+
+    /**
+     * Puts the list of trips in order by department
+     * @param trips the list of trips that will be organized
+     * @param length the length of the list of trips
+     */
+    private static void orderTripsByDept(Trip[] trips, int length) {
+        for (int i = 0; i < (length - 1); i++) {
+            for (int j = 0; j < (length - i - 1); j++) {
+                String dept1 = trips[j].getBooking().getEmployee().getDepartment().toString();
+                String dept2 = trips[j + 1].getBooking().getEmployee().getDepartment().toString();
+                //sort departments
+                if (dept1.compareTo(dept2) > 0) {
+                    Trip temp = trips[j];
+                    trips[j] = trips[j+1];
+                    trips[j+1] = temp;
+                }
+            }
+        }
+    }
+
+    /**
+     * Puts all the trips from the linked list into an array
+     * @return array of trips
+     */
+    private static Trip[] getAllTrips() {
+        int length = 1;
+        Node ptr = Frontend.tripList.getLast().getNext();
+        while (ptr != Frontend.tripList.getLast()) {
+            length++;
+            ptr = ptr.getNext();
+        }
+
+        Trip[] trips = new Trip[length];
+        ptr = Frontend.tripList.getLast().getNext();
+        for (int i = 0; i < length; i++){
+            trips[i] = ptr.getTrip();
+            ptr = ptr.getNext();
+        }
+
+        return trips;
+    }
 
     /**
      * PR Command: Prints all reservations ordered by campus city location, then license plate number, and then by beginning date.

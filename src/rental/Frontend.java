@@ -15,8 +15,8 @@ import java.util.Scanner;
  * @authors Lana Huang, Sharon Chen
  */
 public class Frontend {
-  public static List<Vehicle> fleet = new List<Vehicle>();
-  public static List<Booking> bookings = new List<Booking>();
+  public static Fleet fleet = new Fleet();
+  public static Reservation bookings = new Reservation();
   public static TripList tripList = new TripList();
 
     /**
@@ -63,8 +63,8 @@ public class Frontend {
             case "PF" -> Sort.printSortedFleet();//needs to be ordered by make then date
             case "PR" -> Sort.printBookingsByCity(); //needs to be ordered by city, then plate, then beginning date
             case "PD" -> Sort.printBookingsByDept();//needs to be ordered by department then by employee
-            case "PT" -> tripList.print();//needs to be ordered by ending date
-            case "PC" -> tripList.printCost(); //needs to be ordered by department
+            case "PT" -> Sort.printCompletedTrips();//needs to be ordered by ending date
+            case "PC" -> Sort.printCost(); //needs to be ordered by department
             default -> {
                 String invalid_command = command + " - invalid command!";
                 System.out.println(invalid_command);
@@ -327,7 +327,7 @@ public class Frontend {
             return;
 
         } else if (!Reservation.isReturnEarliestEnd(returnDate)) {
-            String notEarliestEndDateMessage = plate + " booked with end date " + returnDate + " - returning not in order of end date.";
+            String notEarliestEndDateMessage = plate + " booked with end date " + returnDate + " - returning not in order of ending date.";
             System.out.println(notEarliestEndDateMessage);
             return;
 
@@ -344,7 +344,8 @@ public class Frontend {
             Booking booking = Reservation.findBookingForReturnVehicle(returnDate, plate);
 
             Trip newTrip = new Trip(booking, booking.getVehicle().getMileage(), mileage);
-            tripList.add(newTrip);
+            Node node = new Node(newTrip);
+            tripList.add(node);
 
             booking.getVehicle().setMileage(mileage);
             bookings.remove(booking);
