@@ -87,15 +87,6 @@ public class Sort {
     }
 
     /**
-     * Swaps the order of trip i with trip j
-     * @param i the index of one of the trip being swapped
-     * @param j the index of the other trip being swapped
-     */
-    private static void swapTrips(Trip[] trips, int i, int j) {
-
-    }
-
-    /**
      * Puts the list of trips in order by department
      * @param trips the list of trips that will be organized
      * @param length the length of the list of trips

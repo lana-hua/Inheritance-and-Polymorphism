@@ -348,6 +348,7 @@ public class Frontend {
             tripList.add(node);
 
             booking.getVehicle().setMileage(mileage);
+            booking.getVehicle().setCampus(booking.getCampusDropoff());
             bookings.remove(booking);
 
             System.out.println("Trip completed: " + newTrip.toString());

@@ -5,9 +5,9 @@ import rental.Make;
 
 public class Sedan extends Vehicle{
     private String type = "sedan";
-    private final double charge_per_mile = 1.79;
-    private final double surcharge_per_mile = .25;
-    private final double surcharge_max = 32.99;
+    private final double chargePerMile = 1.79;
+    private final double surchargePerMile = .25;
+    private final double surchargeMax = 32.99;
 
     public Sedan(String plate) {
         super(plate);
@@ -25,15 +25,16 @@ public class Sedan extends Vehicle{
 
     @Override
     public double charge(int mileageUsed) {
-        return charge_per_mile * mileageUsed;
+        return chargePerMile * mileageUsed;
     }
 
     @Override
     public double surcharge(int mileageUsed, boolean surcharge) {
-        double cost = mileageUsed * surcharge_per_mile;
-        if (cost > surcharge_max) {
-            return surcharge_max;
+        double cost = mileageUsed * surchargePerMile;
+        if (cost > surchargeMax) {
+            return surchargeMax;
         }
         return cost;
+
     }
 }
