@@ -22,7 +22,7 @@ public class Trip {
         this.booking = booking;
         this.beginMileage = beginMileage;
         this.endMileage = endMileage;
-        this.surcharge = booking.getCampusPickup().name().equals(booking.getCampusDropoff().name());
+        this.surcharge = !booking.getCampusPickup().name().equals(booking.getCampusDropoff().name());
     }
 
     /**
@@ -82,6 +82,7 @@ public class Trip {
     @Override
     public String toString(){
         int mileageUsed = endMileage - beginMileage;
+      
         boolean checkSurcharge = hasSurcharge();
         if (checkSurcharge){
             return (booking.getVehicle().getPlate() + " " + booking.getBegin() + " ~ " + booking.getEnd() + " mileage(old): " + beginMileage + " mileage(new): " + endMileage + " mileage(used): " + mileageUsed + " [dropped off: " + booking.getCampusDropoff().name() + "**]" + " [picked up: " + booking.getCampusPickup().name() + "]");
