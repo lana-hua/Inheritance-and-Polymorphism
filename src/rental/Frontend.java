@@ -320,33 +320,30 @@ public class Frontend {
     public static void returnVehicle(String[] dataToken) {
         Date returnDate = new Date(dataToken[1]);
         String plate = dataToken[2];
-        if (!Vehicle.isValidMileage(dataToken[3])) {
-            return;
-        }
-        int mileage = Integer.parseInt(dataToken[3]);
 
-        if (Reservation.findBookingForReturnVehicle(returnDate, plate) == null){
+        if (Reservation.findBookingForReturnVehicle(returnDate, plate) == null) {
             String cannotFindBookingMessage = plate + " booked with ending date " + returnDate + " - cannot find the booking.";
             System.out.println(cannotFindBookingMessage);
             return;
 
         } else if (!Reservation.isReturnEarliestEnd(returnDate)) {
-            String notEarliestEndDateMessage = plate + " booked with ending date " + returnDate + " - returning not in order of end date.";
+            String notEarliestEndDateMessage = plate + " booked with end date " + returnDate + " - returning not in order of end date.";
             System.out.println(notEarliestEndDateMessage);
             return;
 
         } else if (!Vehicle.isValidMileage(dataToken[3])) {
             return;
 
-        } else if(Reservation.findBookingForReturnVehicle(returnDate,plate).getVehicle().getMileage() >= mileage) {
-            String invalidMileageMessage = "Invalid mileage - current mileage: " + Reservation.findBookingForReturnVehicle(returnDate,plate).getVehicle().getMileage() + " entered mileage: " + mileage;
+        } else if (Reservation.findBookingForReturnVehicle(returnDate, plate).getVehicle().getMileage() >= Integer.parseInt(dataToken[3])) {
+            String invalidMileageMessage = "Invalid mileage - current mileage: " + Reservation.findBookingForReturnVehicle(returnDate, plate).getVehicle().getMileage() + " entered mileage: " + Integer.parseInt(dataToken[3]);
             System.out.println(invalidMileageMessage);
             return;
 
         } else {
-            Booking booking = Reservation.findBookingForReturnVehicle(returnDate,plate);
+            int mileage = Integer.parseInt(dataToken[3]);
+            Booking booking = Reservation.findBookingForReturnVehicle(returnDate, plate);
 
-            Trip newTrip = new Trip(booking, booking.getVehicle().getMileage(),mileage);
+            Trip newTrip = new Trip(booking, booking.getVehicle().getMileage(), mileage);
             tripList.add(newTrip);
 
             booking.getVehicle().setMileage(mileage);
@@ -354,6 +351,7 @@ public class Frontend {
 
             System.out.println("Trip completed: " + newTrip.toString());
         }
+
     }
 
     /**

@@ -121,13 +121,19 @@ public class Reservation extends List<Booking> {
      * @return true if the return date is the earliest end date; return false otherwise
      */
     public static boolean isReturnEarliestEnd (Date returnDate){
-        Date earliestDate = Frontend.bookings.get(0).getEnd();
+        if (Frontend.bookings.isEmpty()) {
+            return true;
+        }
+        Date earliest = Frontend.bookings.get(0).getEnd();
+
         for (int i = 1; i < Frontend.bookings.size(); i++) {
-            if (Frontend.bookings.get(i).getEnd().compareTo(earliestDate) < 1) {
-                earliestDate = Frontend.bookings.get(i).getEnd();
+            Date endDate = Frontend.bookings.get(i).getEnd();
+            if (endDate.compareTo(earliest) < 0) {
+                earliest = endDate;
             }
         }
-        return returnDate.compareTo(earliestDate) == 0;
+
+        return returnDate.compareTo(earliest) == 0;
     }
 
 }
