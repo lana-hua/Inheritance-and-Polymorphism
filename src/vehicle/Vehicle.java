@@ -20,6 +20,10 @@ public abstract class Vehicle implements Comparable<Vehicle> {
     public abstract double charge(int mileageUsed); //charge per mile used
     public abstract double surcharge(int mileageUsed, boolean surcharge);
 
+    public void setCampus(Campus campus) {
+        this.campus = campus;
+    }
+
     /**
      * Gets the mileage from an instance of Vehicle.
      * @return mileage
