@@ -1,6 +1,7 @@
 package util;
 
 import rental.Booking;
+import rental.Campus;
 import rental.Date;
 import rental.Frontend;
 import vehicle.Vehicle;
@@ -19,12 +20,15 @@ public class Sort {
 
         for (int i = 0; i < (Frontend.bookings.size() - 1); i++) {
             for (int j = 0; j < (Frontend.bookings.size() - i - 1); j++) {
-                String city1 = Frontend.bookings.get(j).getCampusDropoff().getCity();
-                String city2 = Frontend.bookings.get(j + 1).getCampusDropoff().getCity();
 
-                if (city1.compareTo(city2) > 0) {
-                    swapBookings(j, (j + 1));
+                String city1 = Frontend.bookings.get(j).getVehicle().getCampus().getCity();
+                String city2 = Frontend.bookings.get(j + 1).getVehicle().getCampus().getCity();
+
+                int compareCampus = city1.compareTo(city2); //Compare by campus first
+                if (compareCampus > 0) {
+                    swapBookings(j, j + 1);
                 }
+
                 else if (city1.compareTo(city2) == 0) {
                     String plate1 = Frontend.bookings.get(j).getVehicle().getPlate();
                     String plate2 = Frontend.bookings.get(j + 1).getVehicle().getPlate();
