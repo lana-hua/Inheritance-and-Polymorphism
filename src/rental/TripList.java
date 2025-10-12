@@ -79,6 +79,11 @@ public class TripList {
         trips[j] = temp;
     }
 
+    /**
+     * Puts the list of trips in order by department
+     * @param trips the list of trips that will be organized
+     * @param length the length of the list of trips
+     */
     private void orderTripsByDept(Trip[] trips, int length) {
         for (int i = 0; i < (length - 1); i++) {
             for (int j = 0; j < (length - i - 1); j++) {
@@ -93,14 +98,10 @@ public class TripList {
     }
 
     /**
-     * PC Command: Prints the cost report, ordered by department, including the charge and surcharge for each trip, and the department total for all charges.
+     * Puts all the trips from the linked list into an array
+     * @return array of trips
      */
-    public void printCost(){
-        if (last == null) {
-            System.out.println("There is no archived trips for the cost report.");
-            return;
-        }
-
+    private Trip[] getAllTrips() {
         int length = 1;
         Node ptr = last.next;
         while (ptr != last) {
@@ -115,19 +116,39 @@ public class TripList {
             ptr = ptr.next;
         }
 
-        orderTripsByDept(trips, length);
+        return trips;
+    }
+
+    /**
+     * PC Command: Prints the cost report, ordered by department, including the charge and surcharge for each trip, and the department total for all charges.
+     */
+    public void printCost(){
+        if (last == null) {
+            System.out.println("There is no archived trips for the cost report.");
+            return;
+        }
+
+        Trip[] trips = getAllTrips();
+        orderTripsByDept(trips, trips.length);
 
         System.out.println("*List of charges ordered by department.");
         String currentDept = "";
-        for (int i = 0; i < length; i++) {
+        double deptTotal = 0.00;
+
+        for (int i = 0; i < trips.length; i++) {
             String tripDept = trips[i].getBooking().getEmployee().getDepartment().toString();
             if (!tripDept.equals(currentDept)) {
+                if (!currentDept.isEmpty()){
+                    System.out.println("  <*>Department total: $" + deptTotal);
+                    deptTotal = 0.00;
+                }
                 currentDept = tripDept;
                 System.out.println("--" + currentDept + "--");
             }
-            System.out.println("\t" + trips[i].toString());
-            //<*>Department total: $ 1,189.19
             int mileageUsed = trips[i].getEndMileage() - trips[i].getBeginMileage();
+            deptTotal += (trips[i].getBooking().getVehicle().charge(mileageUsed)) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge());
+
+            System.out.println("\t" + trips[i].toString());
             System.out.println("\t\t[charge: $" + trips[i].getBooking().getVehicle().charge(mileageUsed) + "] [surcharge: " + trips[i].containsSurcharge() + "] [total charge: " + (trips[i].getBooking().getVehicle().charge(mileageUsed)) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge()) + "]");
         }
         System.out.println("*end of util.\n");
