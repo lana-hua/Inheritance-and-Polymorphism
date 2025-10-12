@@ -68,6 +68,7 @@ public class Frontend {
             case "PR" -> bookings.printByCity(); //needs to be ordered by city, then plate, then beginning date
             case "PD" -> bookings.printByDept();//needs to be ordered by department then by employee
             case "PT" -> tripList.print();//needs to be ordered by ending date
+            case "PC" -> tripList.printCost(); //needs to be ordered by department
             default -> {
                 String invalid_command = command + " - invalid command!";
                 System.out.println(invalid_command);

@@ -213,6 +213,11 @@ public class Reservation {
         return returnDate.compareTo(earliestDate) == 0;
     }
 
+    /**
+     * Swaps the order of booking i with booking j
+     * @param i the index of one of the bookings being swapped
+     * @param j the index of the other booking being swapped
+     */
     private void swapBookings(int i, int j) {
         Booking temp = bookings[i];
         bookings[i] = bookings[j];
@@ -277,17 +282,13 @@ public class Reservation {
                 String dept2 = bookings[j + 1].getEmployee().getDepartment().toString();
                 //sort departments
                 if (dept1.compareTo(dept2) > 0) {
-                    Booking temp = bookings[j];
-                    bookings[j] = bookings[j + 1];
-                    bookings[j + 1] = temp;
+                    swapBookings(j, (j + 1));
                 } else if (dept1.compareTo(dept2) == 0) {
                     String emp1 = bookings[j].getEmployee().name();
                     String emp2 = bookings[j + 1].getEmployee().name();
                     //sort employees in department
                     if (emp1.compareTo(emp2) > 0) {
-                        Booking temp = bookings[j];
-                        bookings[j] = bookings[j + 1];
-                        bookings[j + 1] = temp;
+                        swapBookings(j, (j + 1));
                     }
                 }
             }
