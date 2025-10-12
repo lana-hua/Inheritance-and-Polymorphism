@@ -100,6 +100,10 @@ public class List<E> implements Iterable<E> {
         }
     }
 
+    /**
+     * Returns the size of the object list.
+     * @return the number of objects in the list.
+     */
     public int size() {
         return size;
     }

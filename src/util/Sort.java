@@ -1,34 +1,132 @@
 package util;
 
+import rental.Booking;
+import rental.Date;
 import rental.Frontend;
 import vehicle.Vehicle;
 
 public class Sort {
     private Sort() {}
 
+    /**
+     * PR Command: Prints all reservations ordered by campus city location, then license plate number, and then by beginning date.
+     */
+    public static void printBookingsByCity() {
+        if (Frontend.bookings.isEmpty()) {
+            System.out.println("There is no booking record.");
+            return;
+        }
+
+        for (int i = 0; i < (Frontend.bookings.size() - 1); i++) {
+            for (int j = 0; j < (Frontend.bookings.size() - i - 1); j++) {
+                String city1 = Frontend.bookings.get(j).getCampusDropoff().getCity();
+                String city2 = Frontend.bookings.get(j + 1).getCampusDropoff().getCity();
+
+                if (city1.compareTo(city2) > 0) {
+                    swapBookings(j, (j + 1));
+                }
+                else if (city1.compareTo(city2) == 0) {
+                    String plate1 = Frontend.bookings.get(j).getVehicle().getPlate();
+                    String plate2 = Frontend.bookings.get(j + 1).getVehicle().getPlate();
+
+                    if (plate1.compareTo(plate2) > 0) {
+                        swapBookings(j, (j + 1));
+                    }
+                    else if (plate1.compareTo(plate2) == 0) {
+                        Date begin1 = Frontend.bookings.get(j).getBegin();
+                        Date begin2 = Frontend.bookings.get(j + 1).getBegin();
+
+                        if (begin1.compareTo(begin2) > 0) {
+                            swapBookings(j, (j + 1));
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println("*List of reservations ordered by location/license plate/beginning date.");
+        for (int i = 0; i < Frontend.bookings.size(); i++) {
+            System.out.println(Frontend.bookings.get(i).toString());
+        }
+        System.out.println("*end of util.\n");
+    } //ordered by city, then plate, and then beginning date
+
+    /**
+     * PD Command: Prints all reservations ordered by department and then by employee.
+     */
+    public static void printBookingsByDept() {
+        if (Frontend.bookings.isEmpty()) {
+            System.out.println("There is no booking record.");
+            return;
+        }
+
+        for (int i = 0; i < (Frontend.bookings.size() - 1); i++) {
+            for (int j = 0; j < (Frontend.bookings.size() - i - 1); j++) {
+                String dept1 = Frontend.bookings.get(j).getEmployee().getDepartment().toString();
+                String dept2 = Frontend.bookings.get(j + 1).getEmployee().getDepartment().toString();
+                //sort departments
+                if (dept1.compareTo(dept2) > 0) {
+                    Booking temp = Frontend.bookings.get(j);
+                    Frontend.bookings.set(j, Frontend.bookings.get(j + 1));
+                    Frontend.bookings.set(j + 1, temp);
+                } else if (dept1.compareTo(dept2) == 0) {
+                    String emp1 = Frontend.bookings.get(j).getEmployee().name();
+                    String emp2 = Frontend.bookings.get(j + 1).getEmployee().name();
+                    //sort employees in department
+                    if (emp1.compareTo(emp2) > 0) {
+                        Booking temp = Frontend.bookings.get(j);
+                        Frontend.bookings.set(j, Frontend.bookings.get(j + 1));
+                        Frontend.bookings.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+        System.out.println("*List of reservations ordered by department and employee.");
+        String currentDept = "";
+        for (int i = 0; i < Frontend.bookings.size(); i++) {
+            String bookingDept = Frontend.bookings.get(i).getEmployee().getDepartment().toString();
+            if (!bookingDept.equals(currentDept)) {
+                currentDept = bookingDept;
+                System.out.println("--" + currentDept + "--");
+            }
+            System.out.println("\t" + Frontend.bookings.get(i).toString());
+        }
+        System.out.println("*end of util.\n");
+    } //ordered by department then by employee
+
+    /**
+     * Swap 2 bookings in the bookings list given the index of booking 1 and booking 2.
+     * @param i The index of the first booking to be swapped.
+     * @param j The index of the second booking to be swapped.
+     */
+    private static void swapBookings(int i, int j) {
+        Booking temp = Frontend.bookings.get(i);
+        Frontend.bookings.set(i, Frontend.bookings.get(j));
+        Frontend.bookings.set(j, temp);
+    }
 
     /**
      * Prints the fleet by the make then by the date obtained
      * Uses selection sort methods to loop through the fleet to find the minimum index of the minimum element.
      */
-    public static void printSortedFleet(List<Vehicle> fleet) {
-        if (fleet.isEmpty()) {
+    public static void printSortedFleet() {
+        if (Frontend.fleet.isEmpty()) {
             Frontend.printNoVehicleInFleet();
 
         } else {
             System.out.println("*List of vehicles in the fleet, ordered by location/make/date obtained.");
-            for (int i = 0; i < fleet.size() - 1; i++) {
+            for (int i = 0; i < Frontend.fleet.size() - 1; i++) {
                 int minIndex = i;
-                for (int j = i + 1; j < fleet.size(); j++) {
-                    int compareCampus = fleet.get(j).getCampus().getCity().compareTo(fleet.get(minIndex).getCampus().getCity()); //Compare by campus first
+                for (int j = i + 1; j < Frontend.fleet.size(); j++) {
+                    int compareCampus = Frontend.fleet.get(j).getCampus().getCity().compareTo(Frontend.fleet.get(minIndex).getCampus().getCity()); //Compare by campus first
                     if (compareCampus < 0) {
                         minIndex = j;
                     } else if (compareCampus == 0) {
-                        int compareMake = fleet.get(j).getMake().compareTo(fleet.get(minIndex).getMake()); //If campus is equal then compare by car make
+                        int compareMake = Frontend.fleet.get(j).getMake().compareTo(Frontend.fleet.get(minIndex).getMake()); //If campus is equal then compare by car make
                         if (compareMake < 0) {
                             minIndex = j;
                         } else if (compareMake == 0) {
-                            int compareDate = fleet.get(j).getDate().compareTo(fleet.get(minIndex).getDate()); //If car make is equal then compare by date
+                            int compareDate = Frontend.fleet.get(j).getDate().compareTo(Frontend.fleet.get(minIndex).getDate()); //If car make is equal then compare by date
                             if (compareDate < 0) {
                                 minIndex = j;
                             }
@@ -37,14 +135,14 @@ public class Sort {
                 }
 
                 if (minIndex != i) {
-                    Vehicle temp = fleet.get(i);
-                    fleet.set(i, fleet.get(minIndex));
-                    fleet.set(minIndex, temp);
+                    Vehicle temp = Frontend.fleet.get(i);
+                    Frontend.fleet.set(i, Frontend.fleet.get(minIndex));
+                    Frontend.fleet.set(minIndex, temp);
                 }
             }
 
-            for (int i = 0; i < fleet.size(); i++) {
-                System.out.println(fleet.get(i));
+            for (int i = 0; i < Frontend.fleet.size(); i++) {
+                System.out.println(Frontend.fleet.get(i));
             }
 
             System.out.println("*end of util.\n");

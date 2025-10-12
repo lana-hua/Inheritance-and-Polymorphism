@@ -36,7 +36,6 @@ public enum Campus {
                 return true;
             }
             default -> {
-                Frontend.printInvalidCampusMessage(campus);
                 return false;
             }
         }

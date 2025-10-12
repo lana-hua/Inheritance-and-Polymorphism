@@ -86,19 +86,19 @@ public class Booking {
         Date end = new Date(dataToken[2]);
         String plate = dataToken[3];
         String employee = dataToken[4];
-        Vehicle vehicle = new Truck(plate);
         String dropoff = dataToken[5];
 
-        if (!Frontend.fleet.contains(vehicle)) {
-            Frontend.printInvalidBookingMessage("Vehicle does not Exist Error", vehicle.getPlate(), null, null, null, null);
+
+        if (!Frontend.fleet.contains(Fleet.getVehicle(plate))) {
+            Frontend.printInvalidBookingMessage("Vehicle does not Exist Error", plate, null, null, null, null);
             return false;
-        } else if (Frontend.bookings.isVehicleConflict(begin, end, plate)) {
+        } else if (Reservation.isVehicleConflict(begin, end, plate)) {
             Frontend.printInvalidBookingMessage("Vehicle not Available Error", plate, null, begin, end, null);
             return false;
         } else if (!Employee.isValidEmployee(employee)) {
             Frontend.printInvalidBookingMessage("Employee not Eligible Error", null, employee, null,null, null);
             return false;
-        } else if (Frontend.bookings.isEmployeeConflict(begin, end, employee) != null) {
+        } else if (Reservation.isEmployeeConflict(begin, end, employee) != null) {
             Frontend.printInvalidBookingMessage("Employee Conflict Error", null, employee, begin, end, null);
             return false;
         } else if (!Campus.isValidCampus(dropoff)) {

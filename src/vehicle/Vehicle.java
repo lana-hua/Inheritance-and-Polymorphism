@@ -136,6 +136,7 @@ public abstract class Vehicle implements Comparable<Vehicle> {
         } else if (!isValidPlate(dataToken[1])) {
             return false;
         } else if (!Campus.isValidCampus(dataToken[5])) {
+            Frontend.printInvalidBookingMessage("Campus Invalid Location", null, null, null, null, dataToken[5]);
             return false;
         } else { return true; }
 
