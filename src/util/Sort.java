@@ -16,21 +16,26 @@ public class Sort {
             Frontend.printNoVehicleInFleet();
 
         } else {
-            System.out.println("*List of vehicles in the fleet, ordered by make and date obtained.");
+            System.out.println("*List of vehicles in the fleet, ordered by location/make/date obtained.");
             for (int i = 0; i < fleet.size() - 1; i++) {
                 int minIndex = i;
                 for (int j = i + 1; j < fleet.size(); j++) {
-                    int compareMake = fleet.get(j).getMake().compareTo(fleet.get(minIndex).getMake());
-                    if (compareMake < 0) {
+                    int compareCampus = fleet.get(j).getCampus().getCity().compareTo(fleet.get(minIndex).getCampus().getCity()); //Compare by campus first
+                    if (compareCampus < 0) {
                         minIndex = j;
-                    } else if (compareMake == 0) {
-                        int compareDate = fleet.get(j).getDate().compareTo(fleet.get(minIndex).getDate());
-                        if (compareDate < 0) {
+                    } else if (compareCampus == 0) {
+                        int compareMake = fleet.get(j).getMake().compareTo(fleet.get(minIndex).getMake()); //If campus is equal then compare by car make
+                        if (compareMake < 0) {
                             minIndex = j;
+                        } else if (compareMake == 0) {
+                            int compareDate = fleet.get(j).getDate().compareTo(fleet.get(minIndex).getDate()); //If car make is equal then compare by date
+                            if (compareDate < 0) {
+                                minIndex = j;
+                            }
                         }
                     }
-
                 }
+
                 if (minIndex != i) {
                     Vehicle temp = fleet.get(i);
                     fleet.set(i, fleet.get(minIndex));
@@ -42,7 +47,7 @@ public class Sort {
                 System.out.println(fleet.get(i));
             }
 
-            System.out.println("*end of list.\n");
+            System.out.println("*end of util.\n");
         }
     }
 }

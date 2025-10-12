@@ -32,7 +32,7 @@ public class TripList {
      */
     public void print() {
         if (last == null) {
-            System.out.println("There is no archived trips.");
+            System.out.println("There is no completed trips.");
             return;
         }
         System.out.println("*List of completed trips ordered by ending date.");

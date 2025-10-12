@@ -5,8 +5,6 @@ import rental.Frontend;
 import rental.Make;
 import rental.Campus;
 
-import java.util.Arrays;
-
 /**
  Vehicle class that contains information about the vehicle.
  It contains the string license plate, the Date it was obtained, the make of the car, and the mileage on the odometer.
@@ -180,17 +178,17 @@ public abstract class Vehicle implements Comparable<Vehicle> {
 
     public static boolean isValidMileage(String mileage) {
         try {
-            int intmileage = Integer.parseInt(mileage);
+            int int_mileage = Integer.parseInt(mileage);
 
-            if (intmileage > 0) {
+            if (int_mileage > 0) {
                 return true;
             }
             else {
-                Frontend.printInvalidMileageMessage(intmileage);
+                Frontend.printInvalidMileageMessage("Invalid Num Mileage", null, int_mileage);
                 return false;
             }
         } catch (NumberFormatException e) {
-            System.out.println("For input string:" + '"' + mileage + '"' + " - not a valid mileage");
+            Frontend.printInvalidMileageMessage("Invalid String Input", mileage, 0);
             return false;
         }
 

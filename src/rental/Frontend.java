@@ -108,9 +108,11 @@ public class Frontend {
      * Prints an error message for invalid mileage input.
      * @param mileage the invalid mileage value
      */
-    public static void printInvalidMileageMessage(int mileage) {
-        String invalidMileageMessage = mileage + " - invalid mileage.";
-        System.out.println(invalidMileageMessage);
+    public static void printInvalidMileageMessage(String errorType, String error, int mileage) {
+        switch (errorType) {
+            case "Invalid Num Mileage" -> System.out.println(mileage + " - invalid mileage.");
+            case "Invalid String Input" -> System.out.println("For input string:" + '"' + error + '"' + " - not a valid mileage.");
+        }
     }
 
     /**
@@ -127,20 +129,24 @@ public class Frontend {
      * @param dataToken the array containing vehicle plate data
      */
     public static void removeVehicle(String[] dataToken) {
-        try {
-            String plate = dataToken[1];
-            Vehicle temp = new Truck(plate);
+        if (dataToken.length != 2) {
+            System.out.println("Missing data tokens for removing a vehicle.");
+            return;
+        }
+        String plate = dataToken[1];
+
+        if (Fleet.getVehicle(plate) != null) {
+            Vehicle temp = Fleet.getVehicle(plate);
 
             if (!bookings.isVehicleBooked(plate)) {
                 fleet.remove(temp);
-            } else if (!fleet.contains(temp)) {
-                System.out.println(plate + " - is not in the fleet.");
+                System.out.println(plate + " has been removed from the fleet.");
             } else {
                 System.out.println(plate + " - has existing bookings; cannot be removed.");
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Missing data tokens for removing a vehicle.");
-            return;
+
+        } else {
+            System.out.println(plate + " is not in the fleet.");
         }
 
     }
