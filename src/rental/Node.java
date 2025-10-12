@@ -9,6 +9,14 @@ public class Node {
     Trip trip;
     Node next;
 
+    public Node getNext() {
+        return next;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
     /**
      * Constructs a new node with trip.
      * The next node reference is initialized to null.
