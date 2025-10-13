@@ -70,6 +70,5 @@ public class Utility extends Vehicle{
             }
             return cost;
         } else { return 0.0; }
-
     }
 }

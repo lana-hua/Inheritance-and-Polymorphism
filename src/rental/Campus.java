@@ -5,7 +5,6 @@ package rental;
  * Each campus has the name and the String format for the city.
  * @author Sharon Chen
  */
-
 public enum Campus {
     Busch ("New Brunswick"),
     Livingston ("New Brunswick"),

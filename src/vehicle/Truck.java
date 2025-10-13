@@ -63,6 +63,5 @@ public class Truck extends Vehicle{
         if (surcharge) {
             return flatFee;
         } else { return 0.0;}
-
     }
 }
