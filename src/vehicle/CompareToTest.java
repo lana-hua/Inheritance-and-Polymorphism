@@ -46,26 +46,48 @@ public class CompareToTest {
     }
 
     @Test
-    public void compareToSedan() {
+    public void compareToSedanLessThan() {
         assertTrue(sedan1.compareTo(sedan4) == -1);//test case 1 - compare two sedans that return -1
+
+    }
+
+    @Test
+    public void compareToSedanGreaterThan() {
         assertTrue(sedan1.compareTo(sedan3) == 1);//test case 2 - compare two sedans that return 1
+    }
+
+    @Test
+    public void compareToSedanEqual() {
         assertTrue(sedan1.compareTo(sedan2) == 0);//test case 3 - compare two sedans that return 0
-
     }
 
     @Test
-    public void compareToUtility() {
+    public void compareToUtilityLessThan() {
         assertTrue(utility1.compareTo(utility4) == -1);//test case 1 - compare two utility that return -1
-        assertTrue(utility1.compareTo(utility3) == 1);//test case 2 - compare two utility that return 1
-        assertTrue(utility1.compareTo(utility2) == 0);//test case 3 - compare two utility that return 0
-
     }
 
     @Test
-    public void compareToTruck(){
-        assertTrue(truck1.compareTo(truck4) == -1);//test case 1 - compare two utility that return -1
-        assertTrue(truck1.compareTo(truck3) == 1);//test case 2 - compare two utility that return 1
-        assertTrue(truck1.compareTo(truck2) == 0);//test case 3 - compare two utility that return 0
+    public void compareToUtilityGreaterThan() {
+        assertTrue(utility1.compareTo(utility3) == 1);//test case 2 - compare two utility that return 1
+    }
 
+    @Test
+    public void compareToUtilityEqual() {
+        assertTrue(utility1.compareTo(utility2) == 0);//test case 3 - compare two utility that return 0
+    }
+
+    @Test
+    public void compareToTruckLessThan(){
+        assertTrue(truck1.compareTo(truck4) == -1);//test case 1 - compare two utility that return -1
+    }
+
+    @Test
+    public void compareToTruckGreaterThan(){
+        assertTrue(truck1.compareTo(truck3) == 1);//test case 2 - compare two utility that return 1
+    }
+
+    @Test
+    public void compareToTruckEqual(){
+        assertTrue(truck1.compareTo(truck2) == 0);//test case 3 - compare two utility that return 0
     }
 }

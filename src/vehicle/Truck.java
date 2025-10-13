@@ -4,37 +4,76 @@ import rental.Campus;
 import rental.Date;
 import rental.Make;
 
+/**
+ *  The Truck class extends from the Vehicle class.
+ *  It has its own charge per mile, surcharge per mile and max surcharge.
+ *  @author Lana Huang
+ */
 public class Truck extends Vehicle{
-    private String type = "truck";
     private final double perMile = 2.99;
     private final double flatFee = 39.99;
 
-    public Truck(String plate) {
-        super(plate);
-    }
-
-    public Truck() {
-        super();
-    }
-
+    /**
+     * Gets the flat fee for trucks.
+     * @return the flat fee.
+     */
     public double getFlatFee() {
         return flatFee;
     }
 
+    /**
+     * Constructs a Truck object with a given plate.
+     * It will set every other variable to null or 0 except for the plate.
+     * @param plate The plate to construct the Truck with.
+     */
+    public Truck(String plate) {
+        super(plate);
+    }
+
+    /**
+     * Constructs a Utility with null variables
+     */
+    public Truck() {
+        super();
+    }
+
+    /**
+     * Constructs Truck given the plate, date obtained, make, and mileage.
+     * @param plate String license plate number.
+     * @param obtained Date obtained.
+     * @param make Make of the Truck.
+     * @param mileage Mileage of the Truck.
+     * @param campus Campus that the Truck is from.
+     */
     public Truck(String plate, Date obtained, Make make, int mileage, Campus campus) {
         super(plate, obtained, make, mileage, campus);
     }
 
-
+    /**
+     * Constructs Truck given a String array dataToken.
+     * Checks if each of the dataTokens are valid.
+     * @param dataToken DataToken that contains the plate, date, make, mileage, and campus
+     */
     public Truck(String[] dataToken) {
         super(dataToken);
     }
 
+    /**
+     * Overrides the charge method from Vehicle to get the correct charge based on Truck chargerPerMile.
+     * @param mileageUsed the given mileageUsed that is used to calculate the charge.
+     * @return a double that's the cost of the charge.
+     */
     @Override
     public double charge(int mileageUsed) {
         return mileageUsed * perMile;
     }
 
+    /**
+     * Overrides the surcharge method from Vehicle to get the correct surcharge based on Truck flat fee.
+     * If there's a surcharge it will equal the flat fee.
+     * @param mileageUsed the given mileageUsed.
+     * @return a double equal to the flat fee; otherwise 0.0 if no surcharge
+     */
     @Override
     public double surcharge(int mileageUsed, boolean surcharge) {
         if (surcharge) {

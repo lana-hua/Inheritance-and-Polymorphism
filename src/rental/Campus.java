@@ -45,6 +45,10 @@ public enum Campus {
         }
     }
 
+    /**
+     * Return a string representation of Campus class with the city and the campus
+     * @return the formatted String with the city and campus name
+     */
     @Override
     public String toString() {
         return name() +  ":" + city;

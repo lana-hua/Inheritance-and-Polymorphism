@@ -9,10 +9,18 @@ public class Node {
     Trip trip;
     Node next;
 
+    /**
+     * Returns the next Node in the linked list
+     * @return the next Node
+     */
     public Node getNext() {
         return next;
     }
 
+    /**
+     * Returns the trip data that the Node has
+     * @return the trip data
+     */
     public Trip getTrip() {
         return trip;
     }

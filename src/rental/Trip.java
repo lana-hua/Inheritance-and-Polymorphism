@@ -70,6 +70,10 @@ public class Trip {
         }
     }
 
+    /**
+     * Returns the mileage used by using the Trip variables
+     * @return the mileage used
+     */
     public int mileageUsed() {
         return endMileage - beginMileage;
     }
