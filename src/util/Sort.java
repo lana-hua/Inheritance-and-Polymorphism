@@ -13,15 +13,14 @@ public class Sort {
      */
     public static void printCost(){
         if (Frontend.tripList.getLast() == null) {
-            System.out.println("There is no archived trips for the cost report.");
+            Frontend.printCostMessage("Empty List", null, null, null, null, null);
             return;
         }
 
         Trip[] trips = getAllTrips();
         orderTripsByDept(trips, trips.length);
-        DecimalFormat df = new DecimalFormat("0.00");
 
-        System.out.println("*List of charges ordered by department.");
+        Frontend.printCostMessage("Start List", null, null, null, null, null);
         String currentDept = "";
         double deptTotal = 0.00;
 
@@ -29,28 +28,28 @@ public class Sort {
             String tripDept = trips[i].getBooking().getEmployee().getDepartment().toString();
             if (!tripDept.equals(currentDept)) {
                 if (!currentDept.isEmpty()){
-                    System.out.println("  <*>Department total: $ " + df.format(deptTotal));
+                    Frontend.printCostMessage("Department Total", null, null, null, deptTotal, null);
                     deptTotal = 0.00;
                 }
                 currentDept = tripDept;
-                System.out.println("--" + currentDept + "--");
+                Frontend.printCostMessage("Department Details", null, null, null, null, currentDept);
             }
             int mileageUsed = trips[i].getEndMileage() - trips[i].getBeginMileage();
 
             if (trips[i].hasSurcharge()){
                 double tripTotal = trips[i].getBooking().getVehicle().charge(mileageUsed) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge());
                 deptTotal += tripTotal;
-                System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + mileageUsed + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "**]"));
-                System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: $" + df.format(trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge())) + "] [total charge: $ " + df.format(tripTotal) + "]");
+                Frontend.printCostMessage("Surcharged Trip Details", trips, i, mileageUsed, null, null);
+                Frontend.printCostMessage("Surcharged Cost Details", trips, i, mileageUsed, tripTotal, null);
             }
             else {
                 deptTotal += trips[i].getBooking().getVehicle().charge(mileageUsed);
-                System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + mileageUsed + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "]"));
-                System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: no] [total charge: $ " + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "]");
+                Frontend.printCostMessage("Not Surcharged Trip Details", trips, i, mileageUsed, null, null);
+                Frontend.printCostMessage("Not Surcharged Cost Details", trips, i, mileageUsed, null, null);
             }
         }
-        System.out.println("  <*>Department total: $ " + df.format(deptTotal));
-        System.out.println("*end of util.\n");
+        Frontend.printCostMessage("Department Total", null, null, null, deptTotal, null);
+        Frontend.printCostMessage("End List", null, null, null, null, null);
     }
 
     /**
@@ -61,10 +60,10 @@ public class Sort {
      */
     public static void printCompletedTrips() {
         if (Frontend.tripList.getLast() == null) {
-            System.out.println("There is no completed trips.");
+            Frontend.printTripsMessage("Empty List", null);
             return;
         }
-        System.out.println("*List of completed trips ordered by ending date.");
+        Frontend.printTripsMessage("Start List", null);
 
         int length = 1;
         Node ptr = Frontend.tripList.getLast().getNext();
@@ -90,11 +89,11 @@ public class Sort {
                 }
                 ptr = ptr.getNext();
             }
-            System.out.println(minNode.getTrip().toString());
-            visited[minIndex] = true;
+            Frontend.printTripsMessage("Trip Details", minNode.getTrip().toString());
 
+            visited[minIndex] = true;
         }
-        System.out.println("*end of list.\n");
+        Frontend.printTripsMessage("End List", null);
     }
 
     /**
@@ -144,7 +143,7 @@ public class Sort {
      */
     public static void printBookingsByCity() {
         if (Frontend.bookings.isEmpty()) {
-            System.out.println("There is no booking record.");
+            Frontend.printBookingsMessage("Empty List", null, null);
             return;
         }
 
@@ -178,11 +177,11 @@ public class Sort {
             }
         }
 
-        System.out.println("*List of reservations ordered by location/license plate/beginning date.");
+        Frontend.printBookingsMessage("Start City List", null, null);
         for (int i = 0; i < Frontend.bookings.size(); i++) {
-            System.out.println(Frontend.bookings.get(i).toString());
+            Frontend.printBookingsMessage("City Booking Details", Frontend.bookings.get(i).toString(), null);
         }
-        System.out.println("*end of util.\n");
+        Frontend.printBookingsMessage("End List", null, null);
     } //ordered by city, then plate, and then beginning date
 
     /**
@@ -190,7 +189,7 @@ public class Sort {
      */
     public static void printBookingsByDept() {
         if (Frontend.bookings.isEmpty()) {
-            System.out.println("There is no booking record.");
+            Frontend.printBookingsMessage("Empty List", null, null);
             return;
         }
 
@@ -215,17 +214,17 @@ public class Sort {
                 }
             }
         }
-        System.out.println("*List of reservations ordered by department and employee.");
+        Frontend.printBookingsMessage("Start Dept List", null, null);
         String currentDept = "";
         for (int i = 0; i < Frontend.bookings.size(); i++) {
             String bookingDept = Frontend.bookings.get(i).getEmployee().getDepartment().toString();
             if (!bookingDept.equals(currentDept)) {
                 currentDept = bookingDept;
-                System.out.println("--" + currentDept + "--");
+                Frontend.printBookingsMessage("Department Details", null, currentDept);
             }
-            System.out.println("\t" + Frontend.bookings.get(i).toString());
+            Frontend.printBookingsMessage("Dept Booking Details", Frontend.bookings.get(i).toString(), null);
         }
-        System.out.println("*end of util.\n");
+        Frontend.printBookingsMessage("End List", null, null);
     } //ordered by department then by employee
 
     /**
@@ -248,7 +247,7 @@ public class Sort {
             Frontend.printNoVehicleInFleet();
 
         } else {
-            System.out.println("*List of vehicles in the fleet, ordered by location/make/date obtained.");
+            Frontend.printFleetMessages("Start List", null);
             for (int i = 0; i < Frontend.fleet.size() - 1; i++) {
                 int minIndex = i;
                 for (int j = i + 1; j < Frontend.fleet.size(); j++) {
@@ -276,10 +275,10 @@ public class Sort {
             }
 
             for (int i = 0; i < Frontend.fleet.size(); i++) {
-                System.out.println(Frontend.fleet.get(i));
+                Frontend.printFleetMessages("Fleet Details", i);
             }
 
-            System.out.println("*end of util.\n");
+            Frontend.printFleetMessages("End List", null);
         }
     }
 }
