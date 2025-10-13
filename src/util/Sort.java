@@ -13,14 +13,14 @@ public class Sort {
      */
     public static void printCost(){
         if (Frontend.tripList.getLast() == null) {
-            Frontend.printCostMessage("Empty List", null, null, null, null, null);
+            Frontend.printCostMessage("Empty List", null, null, null, null);
             return;
         }
 
         Trip[] trips = getAllTrips();
         orderTripsByDept(trips, trips.length);
 
-        Frontend.printCostMessage("Start List", null, null, null, null, null);
+        Frontend.printCostMessage("Start List", null, null, null, null);
         String currentDept = "";
         double deptTotal = 0.00;
 
@@ -28,42 +28,41 @@ public class Sort {
             String tripDept = trips[i].getBooking().getEmployee().getDepartment().toString();
             if (!tripDept.equals(currentDept)) {
                 if (!currentDept.isEmpty()){
-                    Frontend.printCostMessage("Department Total", null, null, null, deptTotal, null);
+                    Frontend.printCostMessage("Department Total", null, null, deptTotal, null);
                     deptTotal = 0.00;
                 }
                 currentDept = tripDept;
-                Frontend.printCostMessage("Department Details", null, null, null, null, currentDept);
+                Frontend.printCostMessage("Department Details", null, null, null, currentDept);
             }
-            int mileageUsed = trips[i].getEndMileage() - trips[i].getBeginMileage();
 
             if (trips[i].hasSurcharge()){
-                double tripTotal = trips[i].getBooking().getVehicle().charge(mileageUsed) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge());
+                double tripTotal = trips[i].getBooking().getVehicle().charge(trips[i].mileageUsed()) + trips[i].getBooking().getVehicle().surcharge(trips[i].mileageUsed(), trips[i].hasSurcharge());
                 deptTotal += tripTotal;
-                Frontend.printCostMessage("Surcharged Trip Details", trips, i, mileageUsed, null, null);
-                Frontend.printCostMessage("Surcharged Cost Details", trips, i, mileageUsed, tripTotal, null);
+                Frontend.printCostMessage("Surcharged Trip Details", trips, i,null, null);
+                Frontend.printCostMessage("Surcharged Cost Details", trips, i, tripTotal, null);
             }
             else {
-                deptTotal += trips[i].getBooking().getVehicle().charge(mileageUsed);
-                Frontend.printCostMessage("Not Surcharged Trip Details", trips, i, mileageUsed, null, null);
-                Frontend.printCostMessage("Not Surcharged Cost Details", trips, i, mileageUsed, null, null);
+                deptTotal += trips[i].getBooking().getVehicle().charge(trips[i].mileageUsed());
+                Frontend.printCostMessage("Not Surcharged Trip Details", trips, i, null, null);
+                Frontend.printCostMessage("Not Surcharged Cost Details", trips, i, null, null);
             }
         }
-        Frontend.printCostMessage("Department Total", null, null, null, deptTotal, null);
-        Frontend.printCostMessage("End List", null, null, null, null, null);
+        Frontend.printCostMessage("Department Total", null, null, deptTotal, null);
+        Frontend.printCostMessage("End List", null, null, null, null);
     }
 
     /**
-     * Print all completed trips in the circular linked list, tripList, ordered by end date.
+     * Print all completed trips in the circular linked list, tripList, ordered by license plate and end date.
      * This method creates a visited boolean array that keeps track of Nodes already visited.
      * It then repeatedly finds the unvisited node with the earliest date, prints the trip information.
      * Then it marks the node as visited and continues this process until all are printed.
      */
     public static void printCompletedTrips() {
         if (Frontend.tripList.getLast() == null) {
-            Frontend.printTripsMessage("Empty List", null);
+            Frontend.printTripsMessage("Empty List", null, null);
             return;
         }
-        Frontend.printTripsMessage("Start List", null);
+        Frontend.printTripsMessage("Start List", null, null);
 
         int length = 1;
         Node ptr = Frontend.tripList.getLast().getNext();
@@ -89,11 +88,10 @@ public class Sort {
                 }
                 ptr = ptr.getNext();
             }
-            Frontend.printTripsMessage("Trip Details", minNode.getTrip().toString());
-
+            //Frontend.printTripsMessage("Trip Details", minNode.getTrip().toString(), null);
             visited[minIndex] = true;
         }
-        Frontend.printTripsMessage("End List", null);
+        Frontend.printTripsMessage("End List", null, null);
     }
 
     /**

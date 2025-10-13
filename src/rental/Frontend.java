@@ -377,10 +377,10 @@ public class Frontend {
      * @param messageType the type of message to print
      * @param trips the list of trips
      * @param i the index of the trip
-     * @param mileageUsed the mileage change from the beginning of the trip to the end of the trip
      * @param cost the cost associated with the messageType
+     * @param currentDept the department being listed
      */
-    public static void printCostMessage(String messageType, Trip[] trips, Integer i, Integer mileageUsed, Double cost, String currentDept) {
+    public static void printCostMessage(String messageType, Trip[] trips, Integer i, Double cost, String currentDept) {
         DecimalFormat df = new DecimalFormat("#,##0.00");
         switch (messageType) {
             case "Empty List" -> System.out.println("There is no archived trips for the cost report.");
@@ -388,10 +388,26 @@ public class Frontend {
             case "End List" -> System.out.println("*end of util.\n");
             case "Department Details" -> System.out.println("--" + currentDept + "--");
             case "Department Total" -> System.out.println("  <*>Department total: $ " + df.format(cost));
-            case "Surcharged Trip Details" -> System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + mileageUsed + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "**]"));
-            case "Surcharged Cost Details" -> System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: $" + df.format(trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge())) + "] [total charge: $ " + df.format(cost) + "]");
-            case "Not Surcharged Trip Details" -> System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + mileageUsed + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "]"));
-            case "Not Surcharged Cost Details" -> System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: no] [total charge: $ " + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "]");
+            case "Surcharged Trip Details" -> System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + trips[i].mileageUsed() + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "**]"));
+            case "Surcharged Cost Details" -> System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(trips[i].mileageUsed())) + "] [surcharge: $" + df.format(trips[i].getBooking().getVehicle().surcharge(trips[i].mileageUsed(), trips[i].hasSurcharge())) + "] [total charge: $ " + df.format(cost) + "]");
+            case "Not Surcharged Trip Details" -> System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + trips[i].mileageUsed() + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "]"));
+            case "Not Surcharged Cost Details" -> System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(trips[i].mileageUsed())) + "] [surcharge: no] [total charge: $ " + df.format(trips[i].getBooking().getVehicle().charge(trips[i].mileageUsed())) + "]");
+        }
+    }
+
+    /**
+     * Prints messages related to trips
+     * @param messageType the type of message to print
+     * @param trips the list of trips
+     * @param i the index of the trip
+     */
+    public static void printTripsMessage(String messageType, Trip[] trips, Integer i) {
+        switch (messageType) {
+            case "Empty List" -> System.out.println("There is no completed trips.");
+            case "Start List" -> System.out.println("*List of completed trips ordered by license plate and ending date.");
+            case "End List" -> System.out.println("*end of util.\n");
+            case "Surcharged Trip Details" -> System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + trips[i].mileageUsed() + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "**]"));
+            case "Not Surcharged Trip Details" -> System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + trips[i].mileageUsed() + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "]"));
         }
     }
 
@@ -413,15 +429,11 @@ public class Frontend {
         }
     }
 
-    public static void printTripsMessage(String messageType, String tripDetails) {
-        switch (messageType) {
-            case "Empty List" -> System.out.println("There is no completed trips.");
-            case "Start List" -> System.out.println("*List of completed trips ordered by ending date.");
-            case "End List" -> System.out.println("*end of util.\n");
-            case "Trip Details" -> System.out.println(tripDetails);
-        }
-    }
-
+    /**
+     * Prints messages related to the fleet
+     * @param messageType the type of message to print
+     * @param i the index of the fleet
+     */
     public static void printFleetMessages(String messageType, Integer i) {
         switch (messageType) {
             case "Start List" -> System.out.println("*List of vehicles in the fleet, ordered by location/make/date obtained.");
