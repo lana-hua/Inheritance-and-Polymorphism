@@ -29,25 +29,27 @@ public class Sort {
             String tripDept = trips[i].getBooking().getEmployee().getDepartment().toString();
             if (!tripDept.equals(currentDept)) {
                 if (!currentDept.isEmpty()){
-                    System.out.println("  <*>Department total: $" + df.format(deptTotal));
+                    System.out.println("  <*>Department total: $ " + df.format(deptTotal));
                     deptTotal = 0.00;
                 }
                 currentDept = tripDept;
                 System.out.println("--" + currentDept + "--");
             }
             int mileageUsed = trips[i].getEndMileage() - trips[i].getBeginMileage();
-            deptTotal += (trips[i].getBooking().getVehicle().charge(mileageUsed)) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge());
 
-            System.out.println("\t" + trips[i].toString());
             if (trips[i].hasSurcharge()){
                 double tripTotal = trips[i].getBooking().getVehicle().charge(mileageUsed) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge());
-                System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: $" + df.format(trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge())) + "] [total charge: $" + df.format(tripTotal) + "]");
+                deptTotal += tripTotal;
+                System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + mileageUsed + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "**]"));
+                System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: $" + df.format(trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge())) + "] [total charge: $ " + df.format(tripTotal) + "]");
             }
             else {
-                System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: no] [total charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "]");
+                deptTotal += trips[i].getBooking().getVehicle().charge(mileageUsed);
+                System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + mileageUsed + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "]"));
+                System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: no] [total charge: $ " + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "]");
             }
         }
-        System.out.println("  <*>Department total: $" + df.format(deptTotal));
+        System.out.println("  <*>Department total: $ " + df.format(deptTotal));
         System.out.println("*end of util.\n");
     }
 
