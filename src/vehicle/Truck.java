@@ -1,5 +1,6 @@
 package vehicle;
 
+import rental.Campus;
 import rental.Date;
 import rental.Make;
 
@@ -12,9 +13,18 @@ public class Truck extends Vehicle{
         super(plate);
     }
 
-    public Truck(String plate, Date obtained, Make make, int mileage) {
-        super(plate, obtained, make, mileage);
+    public Truck() {
+        super();
     }
+
+    public double getFlatFee() {
+        return flatFee;
+    }
+
+    public Truck(String plate, Date obtained, Make make, int mileage, Campus campus) {
+        super(plate, obtained, make, mileage, campus);
+    }
+
 
     public Truck(String[] dataToken) {
         super(dataToken);
@@ -27,6 +37,9 @@ public class Truck extends Vehicle{
 
     @Override
     public double surcharge(int mileageUsed, boolean surcharge) {
-        return flatFee;
+        if (surcharge) {
+            return flatFee;
+        } else { return 0.0;}
+
     }
 }

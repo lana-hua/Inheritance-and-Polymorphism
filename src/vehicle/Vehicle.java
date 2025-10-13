@@ -84,7 +84,7 @@ public abstract class Vehicle implements Comparable<Vehicle> {
     }
 
     /**
-     * Constructs a Vehicle
+     * Constructs a Vehicle with only a plate
      * @param plate
      */
     public Vehicle(String plate) {
@@ -92,6 +92,18 @@ public abstract class Vehicle implements Comparable<Vehicle> {
         this.obtained = null;
         this.make = null;
         this.mileage = 0;
+        this.campus = null;
+    }
+
+    /**
+     * Constructs a Vehicle with null variables
+     */
+    public Vehicle() {
+        this.plate = null;
+        this.obtained = null;
+        this.make = null;
+        this.mileage = 0;
+        this.campus = null;
     }
 
     /**
@@ -101,11 +113,12 @@ public abstract class Vehicle implements Comparable<Vehicle> {
      * @param make Make of the vehicle.
      * @param mileage Mileage of the vehicle.
      */
-    public Vehicle(String plate, Date obtained, Make make, int mileage) {
+    public Vehicle(String plate, Date obtained, Make make, int mileage, Campus campus) {
         this.plate = plate;
         this.obtained = obtained;
         this.make = make;
         this.mileage = mileage;
+        this.campus = campus;
     }
 
     /**

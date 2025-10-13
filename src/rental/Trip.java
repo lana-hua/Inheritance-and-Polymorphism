@@ -70,6 +70,10 @@ public class Trip {
         }
     }
 
+    public int mileageUsed() {
+        return endMileage - beginMileage;
+    }
+
     /**
      * Compares if the trip object is the same as the object given
      * @param comparison the object to compare with the trip
