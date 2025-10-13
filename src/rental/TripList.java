@@ -19,6 +19,30 @@ public class TripList extends List<Node> {
     }
 
     /**
+     * Finds the length of Triplist and returns the int length.
+     * @return integer length.
+     */
+    public static int getLength() {
+        if (Frontend.tripList.getLast() == null) {
+            return 0;
+        }
+
+        if (Frontend.tripList.getLast() == Frontend.tripList.getLast().getNext()) {
+            return 1;
+        }
+
+        int length = 1;
+        Node ptr = Frontend.tripList.getLast().getNext();
+
+        while (ptr != Frontend.tripList.getLast()) {
+            length++;
+            ptr = ptr.getNext();
+        }
+
+        return length;
+    }
+
+    /**
      * Add given New Node to circular linked list.
      * @param newNode The new node to be added to linked list.
      */
