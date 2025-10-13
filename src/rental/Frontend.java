@@ -43,7 +43,6 @@ public class Frontend {
 
             checkCommand(command, dataToken);
         }
-
         scanner.close();
     }
 

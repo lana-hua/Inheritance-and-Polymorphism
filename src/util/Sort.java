@@ -4,7 +4,10 @@ import rental.*;
 import java.text.DecimalFormat;
 import vehicle.Vehicle;
 
-
+/**
+ * The Sort util class sorts lists inplace based on different keys.
+ * @author Lana Huang, Sharon Chen
+ */
 public class Sort {
     private Sort() {}
 

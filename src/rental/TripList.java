@@ -10,6 +10,10 @@ import util.List;
 public class TripList extends List<Node> {
     private Node last;
 
+    /**
+     * Returns the last Node in the TripList Linked List
+     * @return the last Node
+     */
     public Node getLast() {
         return last;
     }

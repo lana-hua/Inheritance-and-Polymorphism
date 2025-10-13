@@ -20,6 +20,10 @@ public abstract class Vehicle implements Comparable<Vehicle> {
     public abstract double charge(int mileageUsed); //charge per mile used
     public abstract double surcharge(int mileageUsed, boolean surcharge);
 
+    /**
+     * Sets a Vehicles campus given a campus.
+     * @param campus Campus that the Vehicle's campus should be set to.
+     */
     public void setCampus(Campus campus) {
         this.campus = campus;
     }
@@ -72,17 +76,6 @@ public abstract class Vehicle implements Comparable<Vehicle> {
         return campus;
     }
 
-    public String getType(String plate) {
-        switch (plate.substring(plate.length() - 1)){
-            case "X" -> { return "truck"; }
-            case "D" -> { return "utility"; }
-            case "S" -> { return "sedan"; }
-            default -> {
-                return null;
-            }
-        }
-    }
-
     /**
      * Constructs a Vehicle with only a plate
      * @param plate
@@ -112,6 +105,7 @@ public abstract class Vehicle implements Comparable<Vehicle> {
      * @param obtained Date obtained.
      * @param make Make of the vehicle.
      * @param mileage Mileage of the vehicle.
+     * @param campus Campus that the Vehicle is from.
      */
     public Vehicle(String plate, Date obtained, Make make, int mileage, Campus campus) {
         this.plate = plate;
@@ -137,6 +131,22 @@ public abstract class Vehicle implements Comparable<Vehicle> {
     }
 
     /**
+     * Gets the Vehicle type based on the last letter of the license plate.
+     * @param plate The given plate of the Vehicle that is being checked
+     * @return X returns the type truck, D returns the type utility, S returns the type sedan.
+     */
+    public String getType(String plate) {
+        switch (plate.substring(plate.length() - 1)){
+            case "X" -> { return "truck"; }
+            case "D" -> { return "utility"; }
+            case "S" -> { return "sedan"; }
+            default -> {
+                return null;
+            }
+        }
+    }
+
+    /**
      * Checks if each of the dataToken can make a valid vehicle.
      * @param dataToken String array dataToken with plate, date, make, and mileage.
      * @return true if all string array elements are valid vehicle parts; false otherwise.
@@ -156,9 +166,7 @@ public abstract class Vehicle implements Comparable<Vehicle> {
             Frontend.printInvalidBookingMessage("Campus Invalid Location", null, null, null, null, dataToken[5]);
             return false;
         } else { return true; }
-
     }
-
 
     /**
      * Checks if the plate string is a valid plate.
@@ -193,7 +201,6 @@ public abstract class Vehicle implements Comparable<Vehicle> {
      * @param mileage The mileage to be checked.
      * @return true if the mileage is greater than 0; false otherwise.
      */
-
     public static boolean isValidMileage(String mileage) {
         try {
             int int_mileage = Integer.parseInt(mileage);
@@ -212,11 +219,10 @@ public abstract class Vehicle implements Comparable<Vehicle> {
 
     }
 
-
     /**
      * Override equals method that checks if the vehicles are equal.
      * Checks through the getClass method and through the vehicle plate.
-     * @param o   the reference object with which to compare.
+     * @param object  The reference object with which to compare.
      * @return true if vehicle is the same; false if they are different.
      */
     @Override
@@ -239,7 +245,7 @@ public abstract class Vehicle implements Comparable<Vehicle> {
 
     /**
      * Override compareTo method that compares the plate of two vehicles.
-     * @param o the reference object with which to compare to.
+     * @param vehicle the reference vehicle with which to compare to.
      * @return 0 if they are the same; -1 or 1 if they are different.
      */
     @Override
@@ -247,10 +253,10 @@ public abstract class Vehicle implements Comparable<Vehicle> {
         return plate.compareTo(vehicle.plate);
     }
 
-    /**
-     * Testbed for 3 test cases of Testing Specifications for compareTo method.
-     * @param args
-     */
+//    /**
+//     * Testbed for 3 test cases of Testing Specifications for compareTo method.
+//     * @param args
+//     */
 //    public static void main(String[] args) {
 //        //1 output
 //        Vehicle vehicle1 = new Vehicle("80671S", null, Make.CHEVY, 10293);

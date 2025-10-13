@@ -6,13 +6,19 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- *
- * @param <E>
+ * This is the List util class where the collection classes, Fleet, Reservation and TripList extend from.
+ * It allows the user to search, resize, add, remove, and match objects in the list.
+ * @param <E> The objects that the List holds.
+ * @author Lana Huang
  */
 public class List<E> implements Iterable<E> {
     private E[] objects; //E is the name for the generic type
     private int size;
 
+    /**
+     * Constructs a List with objects E
+     * It instantiates the List with a starting capacity of 4 and a size of 0
+     */
     public List() {
         Object[] temp = new Object[4];
         objects = (E[]) temp;
@@ -92,6 +98,10 @@ public class List<E> implements Iterable<E> {
         }
     }
 
+    /**
+     * Checks if the List is empty by reading the size of the list.
+     * @return true if List is empty; false otherwise.
+     */
     public boolean isEmpty() {
         if (size == 0) {
             return true;
@@ -108,42 +118,75 @@ public class List<E> implements Iterable<E> {
         return size;
     }
 
+    /**
+     * Create a new ListIterator to help with traversing a List
+     * @return ListIterator
+     */
     public Iterator<E> iterator() {
         return new ListIterator<>();
-    } //traversing the list using for each
+    }
 
+    /**
+     * Finds and returns the object at the given index from the list.
+     * @param index the index at which we are finding the object.
+     * @return object that is at the given index.
+     */
     public E get(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
         return objects[index];
-    } //return the object at the index
+    }
 
+    /**
+     * Sets an object e at the given index in the list.
+     * @param index The index in the list where we are setting the object at.
+     * @param e The object that should be put at given index.
+     */
     public void set(int index, E e) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
         objects[index] = e;
-    } //put object e at the index
+    }
 
+    /**
+     * Finds the index of object E in the list.
+     * It uses the private method find(e) that returns the index of an object.
+     * @param e The object that should be found in the list
+     * @return The index that the object is at in the list or return -1 if it's not found.
+     */
     public int indexOf(E e) {
         return find(e);
-    } //return index of object e, or return -1
+    }
 
-    //private inner class for the iterator to work properly
+    /**
+     * Private inner class for the iterator to work.
+     * @param <E> The object list to iterate.
+     */
     private class ListIterator<E> implements Iterator<E> {
         int current = 0; //current index when traversing the list (array)
+
+        /**
+         * Checks if the List is empty or if it's at the end of the list
+         * @return true if it's not empty and not at the end of the list; return false otherwise
+         */
         public boolean hasNext(){
             if (isEmpty()) {
                 return false;
             } else {
                 return current < size;
             }
-        } //if it’s empty or at the end of the array
+        }
+
+        /**
+         * Returns the next object in the list if there is a next in the list
+         * @return object or throw Exception otherwise
+         */
         public E next() {
             if (hasNext()) {
                 return (E) objects[current++];
             } else {
                 throw new NoSuchElementException();
             }
-        } //return the next object in the list
+        }
     }
 }
