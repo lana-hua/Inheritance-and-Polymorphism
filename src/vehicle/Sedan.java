@@ -23,22 +23,6 @@ public class Sedan extends Vehicle{
     }
 
     /**
-     * Constructs a Sedan object with a given plate.
-     * It will set every other variable to null or 0 except for the plate.
-     * @param plate The plate to construct the Sedan with.
-     */
-    public Sedan(String plate) {
-        super(plate);
-    }
-
-    /**
-     * Constructs a Sedan with null variables
-     */
-    public Sedan() {
-        super();
-    }
-
-    /**
      * Constructs Sedan given the plate, date obtained, make, and mileage.
      * @param plate String license plate number.
      * @param obtained Date obtained.

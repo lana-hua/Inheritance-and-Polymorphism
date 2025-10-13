@@ -76,28 +76,17 @@ public abstract class Vehicle implements Comparable<Vehicle> {
         return campus;
     }
 
-    /**
-     * Constructs a Vehicle with only a plate
-     * @param plate
-     */
-    public Vehicle(String plate) {
-        this.plate = plate;
-        this.obtained = null;
-        this.make = null;
-        this.mileage = 0;
-        this.campus = null;
-    }
-
-    /**
-     * Constructs a Vehicle with null variables
-     */
-    public Vehicle() {
-        this.plate = null;
-        this.obtained = null;
-        this.make = null;
-        this.mileage = 0;
-        this.campus = null;
-    }
+//    /**
+//     * Constructs a Vehicle with only a plate
+//     * @param plate
+//     */
+//    public Vehicle(String plate) {
+//        this.plate = plate;
+//        this.obtained = null;
+//        this.make = null;
+//        this.mileage = 0;
+//        this.campus = null;
+//    }
 
     /**
      * Constructs Vehicle given the plate, date obtained, make, and mileage.

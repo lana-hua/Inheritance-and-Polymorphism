@@ -23,22 +23,6 @@ public class Utility extends Vehicle{
     }
 
     /**
-     * Constructs a Utility object with a given plate.
-     * It will set every other variable to null or 0 except for the plate.
-     * @param plate The plate to construct the Utility with.
-     */
-    public Utility(String plate) {
-        super(plate);
-    }
-
-    /**
-     * Constructs a Utility with null variables
-     */
-    public Utility() {
-        super();
-    }
-
-    /**
      * Constructs Utility given the plate, date obtained, make, and mileage.
      * @param plate String license plate number.
      * @param obtained Date obtained.

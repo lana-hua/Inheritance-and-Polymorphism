@@ -22,22 +22,6 @@ public class Truck extends Vehicle{
     }
 
     /**
-     * Constructs a Truck object with a given plate.
-     * It will set every other variable to null or 0 except for the plate.
-     * @param plate The plate to construct the Truck with.
-     */
-    public Truck(String plate) {
-        super(plate);
-    }
-
-    /**
-     * Constructs a Utility with null variables
-     */
-    public Truck() {
-        super();
-    }
-
-    /**
      * Constructs Truck given the plate, date obtained, make, and mileage.
      * @param plate String license plate number.
      * @param obtained Date obtained.
