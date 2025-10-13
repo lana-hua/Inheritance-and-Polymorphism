@@ -161,8 +161,7 @@ public class Booking {
      */
     @Override
     public String toString(){
-        return (vehicle.getPlate() + ":" + vehicle.getMake() + " [" + vehicle.getCampus() + "]" + " " + begin + " ~ " + end + " [drop off:" + dropoff.name()
-        + "] [" + employee.name().toUpperCase() + "]");
+        return (vehicle.getPlate() + ":" + vehicle.getMake() + " [" + vehicle.getCampus() + "]" + " " + begin + " ~ " + end + " [drop off:" + dropoff.name() + "] [" + employee.name().toUpperCase() + "]");
     }
 
 }
