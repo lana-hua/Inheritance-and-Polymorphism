@@ -1,6 +1,5 @@
 package rental;
 
-import util.List;
 import vehicle.Sedan;
 import vehicle.Truck;
 import vehicle.Utility;
@@ -406,17 +405,6 @@ public class Frontend {
             case "Start List" -> System.out.println("*List of completed trips ordered by license plate and ending date.");
             case "End List" -> System.out.println("*end of util.\n");
             case "Trip Details" -> System.out.println(minNode);
-            case "Surcharged Trip Details" -> System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + trips[i].mileageUsed() + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "**]"));
-            case "Not Surcharged Trip Details" -> System.out.println("\t" + (trips[i].getBooking().getVehicle().getPlate() + " " + trips[i].getBooking().getBegin() + " ~ " + trips[i].getBooking().getEnd() + " mileage(old): " + trips[i].getBeginMileage() + " mileage(new): " + trips[i].getEndMileage() + " mileage(used): " + trips[i].mileageUsed() + " [dropped off: " + trips[i].getBooking().getCampusDropoff().name() + "]"));
-        }
-    }
-
-    private static void printTripDetails() {
-        Node ptr = tripList.getLast().getNext();
-        System.out.println(ptr.toString());
-        ptr = ptr.getNext();
-        while (ptr != tripList.getLast()) {
-            System.out.println(ptr.toString());
         }
     }
 

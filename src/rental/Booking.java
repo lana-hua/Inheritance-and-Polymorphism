@@ -1,6 +1,5 @@
 package rental;
 
-import vehicle.Truck;
 import vehicle.Vehicle;
 
 /**
@@ -8,7 +7,6 @@ import vehicle.Vehicle;
  It allows the user to obtain information including dates, vehicle details, employee details, and campus details while also checking validity of the dates.
  @author Sharon Chen
  */
-
 public class Booking {
     private Date begin;
     private Date end;

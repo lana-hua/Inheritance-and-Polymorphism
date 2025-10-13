@@ -5,7 +5,6 @@ package rental;
  It allows the user to track the trip information, make comparisons, and convert to strings.
  @author Sharon Chen
  */
-
 public class Trip {
     private Booking booking;
     private int beginMileage;

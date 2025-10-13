@@ -65,6 +65,4 @@ public class TripList extends List<Node> {
     public boolean isEmpty() {
         return last == null;
     }
-
-
 }

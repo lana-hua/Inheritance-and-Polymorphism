@@ -1,7 +1,6 @@
 package util;
 
 import rental.*;
-import java.text.DecimalFormat;
 import vehicle.Vehicle;
 
 /**

@@ -1,7 +1,5 @@
 package util;
 
-import vehicle.Vehicle;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
