@@ -5,7 +5,8 @@ import java.text.DecimalFormat;
 import vehicle.Vehicle;
 
 /**
- * The Sort util class sorts lists inplace based on different keys.
+ * The Sort util class sorts lists based on different keys.
+ * It sorts the Fleet, Reservation, and TripList as well as the Cost Report for the Trips
  * @author Lana Huang, Sharon Chen
  */
 public class Sort {
