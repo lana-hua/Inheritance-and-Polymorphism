@@ -220,11 +220,11 @@ public abstract class Vehicle implements Comparable<Vehicle> {
      * @return true if vehicle is the same; false if they are different.
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
 
-        Vehicle other = (Vehicle) o;
+        Vehicle other = (Vehicle) object;
         return this.plate.equals(other.plate);
     }
 
@@ -243,8 +243,8 @@ public abstract class Vehicle implements Comparable<Vehicle> {
      * @return 0 if they are the same; -1 or 1 if they are different.
      */
     @Override
-    public int compareTo(Vehicle o) {
-        return plate.compareTo(o.plate);
+    public int compareTo(Vehicle vehicle) {
+        return plate.compareTo(vehicle.plate);
     }
 
     /**

@@ -256,6 +256,11 @@ public class Frontend {
         }
     }
 
+    /**
+     * Prints error messages if the license plate is invalid
+     * @param errorType the type of plate error
+     * @param plate the vehicle plate number
+     */
     public static void printInvalidPlateMessage(String errorType, String plate) {
         switch (errorType) {
             case "6 Character Error" -> System.out.println(plate + " - license plate number must be exactly 6 characters.");
@@ -264,6 +269,12 @@ public class Frontend {
         }
     }
 
+    /**
+     * Prints messages related to loading vehicles
+     * @param messageType the type of message to print
+     * @param error the error details if applicable
+     * @param numloaded the number of vehicles loaded if applicable
+     */
     public static void printLoadVehicleMessage(String messageType, String error, int numloaded) {
         switch (messageType) {
             case "Unknown Vehicle Type" -> System.out.println("Unknown vehicle type: " + error);
