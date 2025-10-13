@@ -62,18 +62,13 @@ public class Sort {
      */
     public static void printCompletedTrips() {
         if (Frontend.tripList.getLast() == null) {
-            Frontend.printTripsMessage("Empty List", null, null);
+            Frontend.printTripsMessage("Empty List", null, null, null);
             return;
         }
-        Frontend.printTripsMessage("Start List", null, null);
+        Frontend.printTripsMessage("Start List", null, null, null);
 
-        int length = 1;
-        Node ptr = Frontend.tripList.getLast().getNext();
-
-        while (ptr != Frontend.tripList.getLast()) {
-            length++;
-            ptr = ptr.getNext();
-        }
+        int length = TripList.getLength();
+        Node ptr;
 
         boolean[] visited = new boolean[length];
 
@@ -84,17 +79,36 @@ public class Sort {
             ptr = Frontend.tripList.getLast().getNext();
             for (int j = 0; j < length; j++) {
                 if (!visited[j]) {
-                    if (minNode == null || (ptr.getTrip().getBooking().getEnd().compareTo(minNode.getTrip().getBooking().getEnd()) < 0)) {
+                    if (minNode == null || (ptr.getTrip().getBooking().getVehicle().getPlate().compareTo(minNode.getTrip().getBooking().getVehicle().getPlate()) < 0)) {
                         minNode = ptr;
                         minIndex = j;
+                    } else if (ptr.getTrip().getBooking().getVehicle().getPlate().compareTo(minNode.getTrip().getBooking().getVehicle().getPlate()) < 0) {
+                        if (ptr.getTrip().getBooking().getEnd().compareTo(minNode.getTrip().getBooking().getEnd()) <= 0) {
+                            minNode = ptr;
+                            minIndex = j;
+                        }
                     }
                 }
                 ptr = ptr.getNext();
             }
-            //Frontend.printTripsMessage("Trip Details", minNode.getTrip().toString(), null);
+            Frontend.printTripsMessage("Trip Details", null, null, Sort.tripString(minNode));
             visited[minIndex] = true;
         }
-        Frontend.printTripsMessage("End List", null, null);
+        Frontend.printTripsMessage("End List", null, null, null);
+    }
+
+    /**
+     * Takes the Node and returns a String in the correct format for printing TripList.
+     * @param minNode the Node to get the correct information for printing.
+     * @return the String in the correct format.
+     */
+    private static String tripString(Node minNode) {
+        if (minNode.getTrip().hasSurcharge()){
+            return (minNode.getTrip().getBooking().getVehicle().getPlate() + " " + minNode.getTrip().getBooking().getBegin() + " ~ " + minNode.getTrip().getBooking().getEnd() + " mileage(old): " + minNode.getTrip().getBeginMileage() + " mileage(new): " + minNode.getTrip().getEndMileage() + " mileage(used): " + minNode.getTrip().mileageUsed() + " [dropped off: " + minNode.getTrip().getBooking().getCampusDropoff().name() + "**]");
+        }
+        else {
+            return (minNode.getTrip().getBooking().getVehicle().getPlate() + " " + minNode.getTrip().getBooking().getBegin() + " ~ " + minNode.getTrip().getBooking().getEnd() + " mileage(old): " + minNode.getTrip().getBeginMileage() + " mileage(new): " + minNode.getTrip().getEndMileage() + " mileage(used): " + minNode.getTrip().mileageUsed() + " [dropped off: " + minNode.getTrip().getBooking().getCampusDropoff().name() + "]");
+        }
     }
 
     /**
@@ -150,7 +164,6 @@ public class Sort {
 
         for (int i = 0; i < (Frontend.bookings.size() - 1); i++) {
             for (int j = 0; j < (Frontend.bookings.size() - i - 1); j++) {
-
                 String city1 = Frontend.bookings.get(j).getVehicle().getCampus().getCity();
                 String city2 = Frontend.bookings.get(j + 1).getVehicle().getCampus().getCity();
 
@@ -177,7 +190,6 @@ public class Sort {
                 }
             }
         }
-
         Frontend.printBookingsMessage("Start City List", null, null);
         for (int i = 0; i < Frontend.bookings.size(); i++) {
             Frontend.printBookingsMessage("City Booking Details", Frontend.bookings.get(i).toString(), null);
@@ -267,18 +279,15 @@ public class Sort {
                         }
                     }
                 }
-
                 if (minIndex != i) {
                     Vehicle temp = Frontend.fleet.get(i);
                     Frontend.fleet.set(i, Frontend.fleet.get(minIndex));
                     Frontend.fleet.set(minIndex, temp);
                 }
             }
-
             for (int i = 0; i < Frontend.fleet.size(); i++) {
                 Frontend.printFleetMessages("Fleet Details", i);
             }
-
             Frontend.printFleetMessages("End List", null);
         }
     }
