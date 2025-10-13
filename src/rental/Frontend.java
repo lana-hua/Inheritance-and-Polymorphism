@@ -157,6 +157,10 @@ public class Frontend {
         System.out.println(notInFleetMessage);
     }
 
+    /**
+     * Prints an error message when a Campus is invalid
+     * @param campus the String that we're checking if
+     */
     public static void printInvalidCampusMessage(String campus) {
         String invalidCampusMessage = campus + " - invalid location.";
         System.out.println(invalidCampusMessage);
@@ -358,11 +362,11 @@ public class Frontend {
             Node node = new Node(newTrip);
             tripList.add(node);
 
+            System.out.println("Trip completed: " + newTrip.toString());
+
             booking.getVehicle().setMileage(mileage);
             booking.getVehicle().setCampus(booking.getCampusDropoff());
             bookings.remove(booking);
-
-            System.out.println("Trip completed: " + newTrip.toString());
         }
 
     }

@@ -1,5 +1,6 @@
 package vehicle;
 
+import rental.Campus;
 import rental.Date;
 import rental.Make;
 
@@ -13,9 +14,16 @@ public class Sedan extends Vehicle{
         super(plate);
     }
 
-    public Sedan(String plate, Date obtained, Make make, int mileage, String type) {
-        super(plate, obtained, make, mileage);
-        this.type = type;
+    public Sedan() {
+        super();
+    }
+
+    public double getSurchargeMax() {
+        return surchargeMax;
+    }
+
+    public Sedan(String plate, Date obtained, Make make, int mileage, Campus campus) {
+        super(plate, obtained, make, mileage, campus);
 
     }
 
@@ -31,10 +39,12 @@ public class Sedan extends Vehicle{
     @Override
     public double surcharge(int mileageUsed, boolean surcharge) {
         double cost = mileageUsed * surchargePerMile;
-        if (cost > surchargeMax) {
-            return surchargeMax;
-        }
-        return cost;
+        if (surcharge) {
+            if (cost > surchargeMax) {
+                return surchargeMax;
+            }
+            return cost;
+        } else { return 0.0; }
 
     }
 }

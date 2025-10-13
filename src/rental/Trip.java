@@ -58,6 +58,23 @@ public class Trip {
     }
 
     /**
+     * Checks if the vehicle has surcharge for the trip
+     * @return yes string if there is a surcharge; return no string otherwise
+     */
+    public String containsSurcharge(){
+        if (this.hasSurcharge()){
+            return "yes";
+        }
+        else {
+            return "no";
+        }
+    }
+
+    public int mileageUsed() {
+        return endMileage - beginMileage;
+    }
+
+    /**
      * Compares if the trip object is the same as the object given
      * @param comparison the object to compare with the trip
      * @return true if the objects are equal; return false otherwise

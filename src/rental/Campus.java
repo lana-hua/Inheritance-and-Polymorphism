@@ -30,14 +30,18 @@ public enum Campus {
      * @return true if the string is a valid employee enum; return false otherwise.
      */
     public static boolean isValidCampus(String campus) {
-        String capitalizedName = campus.substring(0, 1).toUpperCase() + campus.toLowerCase().substring(1);
-        switch (capitalizedName) {
-            case "Busch", "Livingston", "Cook", "Newark", "Camden" -> {
-                return true;
+        try {
+            String capitalizedName = campus.substring(0, 1).toUpperCase() + campus.toLowerCase().substring(1);
+            switch (capitalizedName) {
+                case "Busch", "Livingston", "Cook", "Newark", "Camden" -> {
+                    return true;
+                }
+                default -> {
+                    return false;
+                }
             }
-            default -> {
-                return false;
-            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

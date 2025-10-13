@@ -1,5 +1,6 @@
 package vehicle;
 
+import rental.Campus;
 import rental.Date;
 import rental.Make;
 
@@ -13,12 +14,20 @@ public class Utility extends Vehicle{
         super(plate);
     }
 
-    public Utility(String plate, Date obtained, Make make, int mileage) {
-        super(plate, obtained, make, mileage);
+    public Utility() {
+        super();
+    }
+
+    public Utility(String plate, Date obtained, Make make, int mileage, Campus campus) {
+        super(plate, obtained, make, mileage, campus);
     }
 
     public Utility(String[] dataToken) {
         super(dataToken);
+    }
+
+    public double getSurchargeMax() {
+        return surchargeMax;
     }
 
     @Override
@@ -29,10 +38,13 @@ public class Utility extends Vehicle{
     @Override
     public double surcharge(int mileageUsed, boolean surcharge) {
         double cost = mileageUsed * surchargePerMile;
-        if (cost > surchargeMax) {
-            return surchargeMax;
-        }
-        return cost;
+        if (surcharge) {
+            if (cost > surchargeMax) {
+                return surchargeMax;
+            }
+            return cost;
+        } else { return 0.0; }
+
     }
 
     public String getType() {
