@@ -1,6 +1,7 @@
 package util;
 
 import rental.*;
+import java.text.DecimalFormat;
 import vehicle.Vehicle;
 
 
@@ -18,6 +19,7 @@ public class Sort {
 
         Trip[] trips = getAllTrips();
         orderTripsByDept(trips, trips.length);
+        DecimalFormat df = new DecimalFormat("0.00");
 
         System.out.println("*List of charges ordered by department.");
         String currentDept = "";
@@ -27,7 +29,7 @@ public class Sort {
             String tripDept = trips[i].getBooking().getEmployee().getDepartment().toString();
             if (!tripDept.equals(currentDept)) {
                 if (!currentDept.isEmpty()){
-                    System.out.println("  <*>Department total: $" + deptTotal);
+                    System.out.println("  <*>Department total: $" + df.format(deptTotal));
                     deptTotal = 0.00;
                 }
                 currentDept = tripDept;
@@ -37,8 +39,15 @@ public class Sort {
             deptTotal += (trips[i].getBooking().getVehicle().charge(mileageUsed)) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge());
 
             System.out.println("\t" + trips[i].toString());
-            System.out.println("\t\t[charge: $" + trips[i].getBooking().getVehicle().charge(mileageUsed) + "] [surcharge: " + trips[i].containsSurcharge() + "] [total charge: " + (trips[i].getBooking().getVehicle().charge(mileageUsed)) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge()) + "]");
+            if (trips[i].hasSurcharge()){
+                double tripTotal = trips[i].getBooking().getVehicle().charge(mileageUsed) + trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge());
+                System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: $" + df.format(trips[i].getBooking().getVehicle().surcharge(mileageUsed, trips[i].hasSurcharge())) + "] [total charge: $" + df.format(tripTotal) + "]");
+            }
+            else {
+                System.out.println("\t\t[charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "] [surcharge: no] [total charge: $" + df.format(trips[i].getBooking().getVehicle().charge(mileageUsed)) + "]");
+            }
         }
+        System.out.println("  <*>Department total: $" + df.format(deptTotal));
         System.out.println("*end of util.\n");
     }
 
@@ -84,15 +93,6 @@ public class Sort {
 
         }
         System.out.println("*end of list.\n");
-    }
-
-    /**
-     * Swaps the order of trip i with trip j
-     * @param i the index of one of the trip being swapped
-     * @param j the index of the other trip being swapped
-     */
-    private static void swapTrips(Trip[] trips, int i, int j) {
-
     }
 
     /**
