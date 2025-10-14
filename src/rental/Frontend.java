@@ -76,28 +76,31 @@ public class Frontend {
      * @param dataToken the array containing vehicle data
      */
     public static void addVehicle(String[] dataToken) {
-        if (dataToken.length != 6) {
-            System.out.println("Missing data tokens for adding a vehicle.");
-            return;
-        }
-        if (Vehicle.isValidVehicle(dataToken)) {
-            Vehicle newVehicle = null;
+        try {
+            if (Vehicle.isValidVehicle(dataToken)) {
+                Vehicle newVehicle = null;
 
-            switch (dataToken[1].substring(dataToken[1].length() - 1)){
-                case "X" -> newVehicle = new Truck(dataToken);
-                case "D" -> newVehicle = new Utility(dataToken);
-                case "S" -> newVehicle = new Sedan(dataToken);
-                default -> {
-                    System.out.println("Unknown vehicle type: " + dataToken[1]);
-                    return;
+                switch (dataToken[1].substring(dataToken[1].length() - 1)){
+                    case "X" -> newVehicle = new Truck(dataToken);
+                    case "D" -> newVehicle = new Utility(dataToken);
+                    case "S" -> newVehicle = new Sedan(dataToken);
+                    default -> {
+                        System.out.println("Unknown vehicle type: " + dataToken[1]);
+                        return;
+                    }
                 }
+                if (!fleet.contains(newVehicle)) {
+                    fleet.add(newVehicle);
+                    String vehicleConfirmation = newVehicle.toString() + " has been added to the fleet.";
+                    System.out.println(vehicleConfirmation);
+                }
+            } else { return; }
+        } catch (Exception e) {
+            if (dataToken.length != 6) {
+                System.out.println("Missing data tokens for adding a vehicle.");
+                return;
             }
-            if (!fleet.contains(newVehicle)) {
-                fleet.add(newVehicle);
-                String vehicleConfirmation = newVehicle.toString() + " has been added to the fleet.";
-                System.out.println(vehicleConfirmation);
-            }
-        } else { return; }
+        }
     }
 
     /**
@@ -125,24 +128,28 @@ public class Frontend {
      * @param dataToken the array containing vehicle plate data
      */
     public static void removeVehicle(String[] dataToken) {
-        if (dataToken.length != 2) {
-            System.out.println("Missing data tokens for removing a vehicle.");
-            return;
-        }
-        String plate = dataToken[1];
+        try {
+            String plate = dataToken[1];
 
-        if (Fleet.getVehicle(plate) != null) {
-            Vehicle temp = Fleet.getVehicle(plate);
+            if (Fleet.getVehicle(plate) != null) {
+                Vehicle temp = Fleet.getVehicle(plate);
 
-            if (!Reservation.isVehicleBooked(plate)) {
-                fleet.remove(temp);
-                System.out.println(plate + " has been removed from the fleet.");
+                if (!Reservation.isVehicleBooked(plate)) {
+                    fleet.remove(temp);
+                    System.out.println(plate + " has been removed from the fleet.");
+                } else {
+                    System.out.println(plate + " - has existing bookings; cannot be removed.");
+                }
+
             } else {
-                System.out.println(plate + " - has existing bookings; cannot be removed.");
+                System.out.println(plate + " is not in the fleet.");
+            }
+        } catch (Exception e) {
+            if (dataToken.length != 2) {
+                System.out.println("Missing data tokens for removing a vehicle.");
+                return;
             }
 
-        } else {
-            System.out.println(plate + " is not in the fleet.");
         }
 
     }
@@ -177,19 +184,23 @@ public class Frontend {
      * @param dataToken the array containing booking data
      */
     public static void bookVehicle(String[] dataToken) {
-        if (Booking.isValidBookingDate(dataToken) && Booking.isValidBooking(dataToken)) {
-            Date begin = new Date(dataToken[1]);
-            Date end = new Date(dataToken[2]);
-            String plate = dataToken[3];
-            Vehicle vehicle = Fleet.getVehicle(plate);
-            Employee employeeName = Employee.valueOf(dataToken[4].substring(0, 1).toUpperCase() + dataToken[4].toLowerCase().substring(1));
-            Campus dropoff = Campus.valueOf(dataToken[5].substring(0,1).toUpperCase() + dataToken[5].toLowerCase().substring(1));
+        try {
+            if (Booking.isValidBookingDate(dataToken) && Booking.isValidBooking(dataToken)) {
+                Date begin = new Date(dataToken[1]);
+                Date end = new Date(dataToken[2]);
+                String plate = dataToken[3];
+                Vehicle vehicle = Fleet.getVehicle(plate);
+                Employee employeeName = Employee.valueOf(dataToken[4].substring(0, 1).toUpperCase() + dataToken[4].toLowerCase().substring(1));
+                Campus dropoff = Campus.valueOf(dataToken[5].substring(0,1).toUpperCase() + dataToken[5].toLowerCase().substring(1));
 
-            Booking newBooking = new Booking(begin, end, vehicle, employeeName, dropoff);
-            bookings.add(newBooking);
+                Booking newBooking = new Booking(begin, end, vehicle, employeeName, dropoff);
+                bookings.add(newBooking);
 
-            System.out.println(newBooking.toString() + " booked.");
-        } else {return;}
+                System.out.println(newBooking.toString() + " booked.");
+            } else {return;}
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

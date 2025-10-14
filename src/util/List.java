@@ -45,12 +45,10 @@ public class List<E> implements Iterable<E> {
         Object[] temp = new Object[size + 4]; // create a new larger array
         E[] newArray = (E[]) temp;
 
-        // manually copy old elements into the new array
         for (int i = 0; i < size; i++) {
             newArray[i] = objects[i];
         }
 
-        // assign new array to objects
         objects = newArray;
     } //grow the size of the array by 4
 
