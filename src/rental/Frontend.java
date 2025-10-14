@@ -148,24 +148,6 @@ public class Frontend {
     }
 
     /**
-     * Prints an error message when a vehicle is not found in the fleet.
-     * @param vehicle the vehicle that was not found
-     */
-    public static void printNotInFleetMessage(Vehicle vehicle) {
-        String notInFleetMessage = vehicle.getPlate() + " is not in the fleet.";
-        System.out.println(notInFleetMessage);
-    }
-
-    /**
-     * Prints an error message when a Campus is invalid
-     * @param campus the String that we're checking if
-     */
-    public static void printInvalidCampusMessage(String campus) {
-        String invalidCampusMessage = campus + " - invalid location.";
-        System.out.println(invalidCampusMessage);
-    }
-
-    /**
      * Prints a message when there are no vehicles in the fleet.
      */
     public static void printNoVehicleInFleet() {
@@ -272,12 +254,12 @@ public class Frontend {
      * Prints messages related to loading vehicles
      * @param messageType the type of message to print
      * @param error the error details if applicable
-     * @param numloaded the number of vehicles loaded if applicable
+     * @param numLoaded the number of vehicles loaded if applicable
      */
-    public static void printLoadVehicleMessage(String messageType, String error, int numloaded) {
+    public static void printLoadVehicleMessage(String messageType, String error, int numLoaded) {
         switch (messageType) {
             case "Unknown Vehicle Type" -> System.out.println("Unknown vehicle type: " + error);
-            case "Vehicles Loaded Message" -> System.out.println(numloaded + " vehicles loaded.");
+            case "Vehicles Loaded Message" -> System.out.println(numLoaded + " vehicles loaded.");
             case "Text file not found" -> System.out.println("Text file not found: " + error);
         }
     }
