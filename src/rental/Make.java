@@ -5,10 +5,20 @@ package rental;
  * @author Lana Huang
  */
 public enum Make {
-    CHEVY,
-    FORD,
-    HONDA,
-    TOYOTA;
+    CHEVY ("CHEVY"),
+    FORD ("FORD"),
+    HONDA ("HONDA"),
+    TOYOTA ("TOYOTA");
+
+    private String make;
+
+    /**
+     * Gives the string make.
+     * @param make The make string.
+     */
+    Make(String make) {
+        this.make = make;
+    }
 
     /**
      * Checks if the given string is a valid make.

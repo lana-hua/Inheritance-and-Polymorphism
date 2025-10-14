@@ -57,19 +57,6 @@ public class Trip {
     }
 
     /**
-     * Checks if the vehicle has surcharge for the trip
-     * @return yes string if there is a surcharge; return no string otherwise
-     */
-    public String containsSurcharge(){
-        if (this.hasSurcharge()){
-            return "yes";
-        }
-        else {
-            return "no";
-        }
-    }
-
-    /**
      * Returns the mileage used by using the Trip variables
      * @return the mileage used
      */
